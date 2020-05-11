@@ -2,6 +2,7 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const ERRORS = require('errors');
+const path = require('path');
 
 // code 600 - database connection error
 ERRORS.create({
@@ -95,7 +96,7 @@ app.post("/api/login",function(res,req,next){
 });
 
 //API QR
-const QRcode = require("qrcode");
+const QRcode = require("qr-image");
 function createNewQRCode(){
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err) throw err;
@@ -121,7 +122,12 @@ app.get("/api/newQRCode",function(req,res,next){
     console.log("NEEE");
     createNewQRCode();
 });
-app.get("/api/QRCode",function(req,res,next){
+
+
+
+app.get("/api/QRCode",function(req,res,next){ 
+    //res.sendFile(path.join(__dirname+'/qrcode/qrcode.html'));
+    
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"})
@@ -133,13 +139,19 @@ app.get("/api/QRCode",function(req,res,next){
                 {},
                 { sort: { _id: -1 } },
                 (err, data) => {
-                   console.log(data);
+                    
+                        var code = QRcode.image(JSON.stringify(data), { type: 'png', ec_level: 'H', size: 10, margin: 0 });
+                        res.setHeader('Content-type', 'image/png');
+                        code.pipe(res);
+                      
+                   
                 },
               );
             
             }  
          
     });
+    
 });
 app.post("/api/QRCheck",function(req,res,next){
     let QRCode;
