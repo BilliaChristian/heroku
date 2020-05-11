@@ -11,6 +11,9 @@
         "negotiator": "0.6.2"
       }
     },
+    "scripts": {
+      "start": "node server.js"
+  },
     "ansi-regex": {
       "version": "4.1.0",
       "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-4.1.0.tgz",
