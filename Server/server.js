@@ -43,16 +43,19 @@ const credentials = {"key":privateKey, "cert":certificate};
 const TIMEOUT = 30; // 60 SEC
 let pageNotFound;
 
-var httpsServer = HTTPS.createServer(credentials,app);
-httpsServer.listen(8888, '127.0.0.1', function() {
-    console.log("Server running");
-});
+var serveStatic = require('serve-static')
 
-/*
-app.use("/",function(req,res,next){
+
+app.use(serveStatic(path.join(__dirname, 'dist')))
+
+var port = process.env.PORT || 8888
+app.listen(port)
+console.log('server started ' + port);
+
+app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
-});*/
+});
 app.get("/prova",function(req,res){
     console.log("prova");
 })
