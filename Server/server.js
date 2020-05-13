@@ -23,7 +23,8 @@ const HTTPS = require('https');
 const MONGO_CLIENT = require("mongodb").MongoClient;
 const STRING_CONNECT = "mongodb+srv://Admin:Padellino69@cluster0-iz04p.mongodb.net/test?retryWrites=true&w=majority";
 const PARAMETERS = {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+     useUnifiedTopology: true
 };
 
 // express
