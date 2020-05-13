@@ -94,7 +94,7 @@ app.post("/api/login",function(res,req,next){
 const QRcode = require("qr-image");
 function createNewQRCode(){
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
-        if (err) throw err;
+        if (err) console.log(err);
         const DB = client.db('App');
         let data = new Date()
         let QrCode = { data: data, codice: Math.random(100) };
