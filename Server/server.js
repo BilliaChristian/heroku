@@ -21,7 +21,7 @@ const HTTPS = require('https');
 
 // mongo
 const MONGO_CLIENT = require("mongodb").MongoClient;
-const STRING_CONNECT = 'mongodb://127.0.0.1:27017';
+const STRING_CONNECT = 'mongodb+srv://Admin:Padellino69@cluster0-iz04p.mongodb.net/test?retryWrites=true&w=majority';
 const PARAMETERS = {
     useNewUrlParser: true,
     useUnifiedTopology: true
