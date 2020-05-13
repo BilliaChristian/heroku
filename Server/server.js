@@ -35,14 +35,6 @@ const jwt = require("jsonwebtoken");
 
 
 
-/* ************************************************************ */
-const privateKey = fs.readFileSync("keys/private.key", "utf8");
-const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
-const credentials = {"key":privateKey, "cert":certificate};
-// avvio server
-const TIMEOUT = 30; // 60 SEC
-let pageNotFound;
-
 var serveStatic = require('serve-static')
 
 
