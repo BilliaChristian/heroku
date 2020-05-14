@@ -138,6 +138,7 @@ app.get("/api/QRCode",function(req,res,next){
 app.post("/api/QRCheck",function(req,res,next){
     console.log("QRUS pre: "+req.body.id);
     console.log("DataUS pre: "+req.body.codice);
+    console.log("Impiegato pre: "+req.body.user);
     let QRCodeId = req.body.id;
     let QRCodeCodice = req.body.codice;
     let idImpiegato = req.body.user;
