@@ -3,6 +3,10 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const ERRORS = require('errors');
 const path = require('path');
+const express = require("express");
+const bodyParser = require('body-parser');
+const jwt = require("jsonwebtoken");
+var serveStatic = require('serve-static');
 
 // code 600 - database connection error
 ERRORS.create({
@@ -27,17 +31,10 @@ const PARAMETERS = {
      useUnifiedTopology: true
 };
 
-// express
-const express = require("express");
+
+
+//Server launch
 const app = express();
-const bodyParser = require('body-parser');
-const jwt = require("jsonwebtoken");
-
-
-
-var serveStatic = require('serve-static')
-
-
 app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
@@ -48,9 +45,8 @@ app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
 });
-app.get("/prova",function(req,res){
-    console.log("prova");
-})
+
+
 // API LOGIN
 app.post("/api/login",function(res,req,next){
     console.log("API LOGIN")
@@ -85,8 +81,7 @@ app.post("/api/login",function(res,req,next){
                     }
                     client.close();
                 });
-            }  
-         
+            }      
     });
 });
 
@@ -103,7 +98,6 @@ function createNewQRCode(){
           console.log("Nuovo QR Inserito");
           client.close();
         });
-         
     });
 }
 
@@ -111,8 +105,7 @@ app.get("/api/newQRCode",function(req,res,next){
     createNewQRCode();
 });
 
-app.get("/api/QRCode",function(req,res,next){ 
-    
+app.get("/api/QRCode",function(req,res,next){     
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"})
@@ -127,17 +120,12 @@ app.get("/api/QRCode",function(req,res,next){
                          var QRCode = require('qrcode');
                          QRCode.toDataURL(JSON.stringify(data), function (err, url) {
                             res.end("<!DOCTYPE html/><html><head><title>node-qrcode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
-                          });
-   
-                     });
-                   
-
-            
-            }  
-         
-    });
-    
+                          });  
+                     });          
+            }          
+    });    
 });
+
 app.post("/api/QRCheck",function(req,res,next){
     let QRCode = req.body.data;
     let idImpiegato = req.body.user;
@@ -175,7 +163,7 @@ function insertLog(data,idImpiegato){
             let oraLog = new Date();
             const DB = client.db('App');
             let collection = DB.collection('Log');
-            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato},function(err) {
+            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":data._id},function(err) {
                 if (err) throw err;
                 console.log("Nuovo LogInserito");
                 client.close();
