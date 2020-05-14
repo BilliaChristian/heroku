@@ -138,7 +138,7 @@ app.get("/api/QRCode",function(req,res,next){
 app.post("/api/QRCheck",function(req,res,next){
     console.log("QRUS pre: "+req.body.id);
     console.log("DataUS pre: "+req.body.codice);
-    let QRCode = req.body.id;
+    let QRCodeId = req.body.id;
     let QRCodeCodice = req.body.codice;
     let idImpiegato = req.body.user;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
@@ -153,12 +153,12 @@ app.post("/api/QRCheck",function(req,res,next){
                 { sort: { _id: -1 } },
                 (err, data) => {
                     console.log("QRDB: "+data._id);
-                    console.log("QRUS: " + QRCode );
+                    console.log("QRUS: " + QRCodeId );
                     console.log("DataDB: " + data.codice);
                     console.log("DataUS: " + QRCodeCodice);
-                   if(data._id == QRCode && data.codice == QRCodeCodice ){
+                   if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
-                       insertLog(QrCode,idImpiegato);
+                       insertLog(QRCodeId,idImpiegato);
                        res.writeHead(200);
                        res.contentType("application/json");
                        res.send({"ris":"ok"});
@@ -174,7 +174,7 @@ app.post("/api/QRCheck",function(req,res,next){
     });
 });
 
-function insertLog(QrCode,idImpiegato){
+function insertLog(QRCodeId,idImpiegato){
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"});
@@ -183,7 +183,7 @@ function insertLog(QrCode,idImpiegato){
             let oraLog = new Date();
             const DB = client.db('App');
             let collection = DB.collection('Log');
-            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":QrCode},function(err) {
+            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":QRCodeId},function(err) {
                 if (err) throw err;
                 console.log("Nuovo LogInserito");
                 client.close();
