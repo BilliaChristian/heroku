@@ -41,6 +41,7 @@ var port = process.env.PORT || 8888
 app.listen(port)
 console.log('server started ' + port);
 
+app.use(bodyParser.json());
 app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
@@ -126,6 +127,12 @@ app.get("/api/QRCode",function(req,res,next){
             }          
     });    
 });
+
+app.options('*', (req, res) => {
+    res.json({
+      status: 'OK'
+    });
+  });
 
 app.post("/api/QRCheck",function(req,res,next){
     let QRCode = req.body.data;
