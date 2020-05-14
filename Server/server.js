@@ -136,8 +136,9 @@ app.get("/api/QRCode",function(req,res,next){
 });
 
 app.post("/api/QRCheck",function(req,res,next){
-    console.log("PROVA:" + req.body.data._id);
-    let QRCode = JSON.stringify(req.body.data);
+
+    let QRCode = req.body.id;
+    let QRCodeData = req.body.data;
     let idImpiegato = req.body.user;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
@@ -154,7 +155,7 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("QRUS: " + QRCode._id );
                     console.log("DataDB: " + data.data);
                     console.log("DataUS: " + QRCode.data);
-                   if(data._id == QRCode._id && data.data == QRCode.data ){
+                   if(data._id == QRCode && data.data == QRCodeData ){
                        console.log("PreInsert");
                        insertLog(QrCode,idImpiegato);
                        res.writeHead(200);
