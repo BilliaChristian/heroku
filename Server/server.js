@@ -137,7 +137,7 @@ app.get("/api/QRCode",function(req,res,next){
 
 app.post("/api/QRCheck",function(req,res,next){
     console.log("QRUS pre: "+req.body.id);
-    console.log("DataUS pre: "+req.body.data);
+    console.log("DataUS pre: "+req.body.codice);
     let QRCode = req.body.id;
     let QRCodeCodice = req.body.codice;
     let idImpiegato = req.body.user;
@@ -154,7 +154,7 @@ app.post("/api/QRCheck",function(req,res,next){
                 (err, data) => {
                     console.log("QRDB: "+data._id);
                     console.log("QRUS: " + QRCode );
-                    console.log("DataDB: " + data.data);
+                    console.log("DataDB: " + data.codice);
                     console.log("DataUS: " + QRCodeData);
                    if(data._id == QRCode && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
