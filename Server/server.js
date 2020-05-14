@@ -6,7 +6,7 @@ const path = require('path');
 const express = require("express");
 const bodyParser = require('body-parser');
 const jwt = require("jsonwebtoken");
-const cors = require('cors');
+const cors = require("cors");
 var serveStatic = require('serve-static');
 
 // code 600 - database connection error
