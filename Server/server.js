@@ -160,6 +160,7 @@ app.post("/api/QRCheck",function(req,res,next){
                        res.contentType("application/json");
                        res.send({"ris":"ok"});
                    }else{
+                       console.log("Errore data");
                        res.send({"ris":"err"});
                    }
                 },
