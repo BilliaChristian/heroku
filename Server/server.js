@@ -133,9 +133,7 @@ app.options('*', (req, res) => {
     let idImpiegato = req.body.user;
     console.log("QRCODE: "+ QRCode);
     console.log("Impiegato:" + idImpiegato);
-    res.json({
-      status: 'OK'
-    });
+    res.send({"ris":"ok"});
   });
 
 app.post("/api/QRCheck",function(req,res,next){
