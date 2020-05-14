@@ -155,7 +155,7 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("QRDB: "+data._id);
                     console.log("QRUS: " + QRCode );
                     console.log("DataDB: " + data.codice);
-                    console.log("DataUS: " + QRCodeData);
+                    console.log("DataUS: " + QRCodeCodice);
                    if(data._id == QRCode && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
                        insertLog(QrCode,idImpiegato);
