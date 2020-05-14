@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
+  "name": "App Badge",
   "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "description": "Progettino bello figo",
   "engines": {
     "node": "12.x"
   },
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BilliaChristian/test"
+    "url": "https://github.com/BilliaChristian/Progetto"
   },
   "keywords": [
     "node",

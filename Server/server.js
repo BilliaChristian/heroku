@@ -94,9 +94,9 @@ app.post("/api/login",function(res,req,next){
 const QRcode = require("qr-image");
 function createNewQRCode(){
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
-        if (err) console.log(err);
+        if (err) throw err;
         const DB = client.db('App');
-        let data = new Date()
+        let data = new Date();
         let QrCode = { data: data, codice: Math.random(100) };
         DB.collection("QRCode").insertOne(QrCode, function(err, res) {
           if (err) throw err;
@@ -107,21 +107,11 @@ function createNewQRCode(){
     });
 }
 
-
-/*
-QRcode.toString('{"nome":"aaaaa","cognome":"bbbbb"}',{type:'terminal'}, function (err, url) {
-    //console.log(url)
-  })
-*/
 app.get("/api/newQRCode",function(req,res,next){
-    console.log("NEEE");
     createNewQRCode();
 });
 
-
-
 app.get("/api/QRCode",function(req,res,next){ 
-    //res.sendFile(path.join(__dirname+'/qrcode/qrcode.html'));
     
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
@@ -134,14 +124,14 @@ app.get("/api/QRCode",function(req,res,next){
                 {},
                 { sort: { _id: -1 } },
                 (err, data) => {
-                    
-                        var code = QRcode.image(JSON.stringify(data), { type: 'png', ec_level: 'H', size: 10, margin: 0 });
-                        res.setHeader('Content-type', 'image/png');
-                        code.pipe(res);
-                      
+                         var QRCode = require('qrcode');
+                         QRCode.toDataURL(JSON.stringify(data), function (err, url) {
+                            res.end("<!DOCTYPE html/><html><head><title>node-qrcode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
+                          });
+   
+                     });
                    
-                },
-              );
+
             
             }  
          
@@ -149,7 +139,8 @@ app.get("/api/QRCode",function(req,res,next){
     
 });
 app.post("/api/QRCheck",function(req,res,next){
-    let QRCode;
+    let QRCode = req.body.data;
+    let idImpiegato = req.body.user;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"})
@@ -161,8 +152,8 @@ app.post("/api/QRCheck",function(req,res,next){
                 {},
                 { sort: { _id: -1 } },
                 (err, data) => {
-                   if(data._id == QRCode && data.data == QRCode ){
-                       insertLog(QrCode);
+                   if(data._id == QRCode._id && data.data == QRCode.data ){
+                       insertLog(QrCode,idImpiegato);
                        res.send({"ris":"ok"});
                    }else{
                        res.send({"ris":"err"});
@@ -175,6 +166,47 @@ app.post("/api/QRCheck",function(req,res,next){
     });
 });
 
-function insertLog(data){
-
+function insertLog(data,idImpiegato){
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            let oraLog = new Date();
+            const DB = client.db('App');
+            let collection = DB.collection('Log');
+            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato},function(err) {
+                if (err) throw err;
+                console.log("Nuovo LogInserito");
+                client.close();
+        });
+    }
+});
 }
+
+
+//API Calendario
+
+app.post("/api/calendario", function(req,res){
+    let idImpiegato = req.body.idImpiegato;
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('QRCode');
+            collection.find(
+                {"idImpiegato": idImpiegato},
+                (err, data) => {
+                    if (err) res.send({"ris":"err"});
+                      else{
+                        res.send(JSON.stringify(data));
+                      }
+                   
+                },
+              );
+            
+            }          
+    });
+});
