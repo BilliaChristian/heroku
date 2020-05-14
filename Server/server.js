@@ -136,7 +136,7 @@ app.get("/api/QRCode",function(req,res,next){
 });
 
 app.post("/api/QRCheck",function(req,res,next){
-    let QRCode = req.body.data;
+    let QRCode = JSON.stringify(req.body.data);
     let idImpiegato = req.body.user;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
