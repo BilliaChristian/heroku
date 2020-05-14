@@ -6,6 +6,7 @@ const path = require('path');
 const express = require("express");
 const bodyParser = require('body-parser');
 const jwt = require("jsonwebtoken");
+const cors = require('cors');
 var serveStatic = require('serve-static');
 
 // code 600 - database connection error
@@ -35,9 +36,15 @@ const PARAMETERS = {
 
 //Server launch
 const app = express();
+const corsOptions = {
+    origin: true,
+    credentials: true
+  }
+
 app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
+app.options('*', cors(corsOptions));
 app.listen(port)
 console.log('server started ' + port);
 
@@ -46,6 +53,7 @@ app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
 });
+
 
 
 // API LOGIN
@@ -127,7 +135,7 @@ app.get("/api/QRCode",function(req,res,next){
             }          
     });    
 });
-
+/*
 app.options('*', (req, res) => {
     let QRCode = req.body.data;
     let idImpiegato = req.body.user;
@@ -135,7 +143,7 @@ app.options('*', (req, res) => {
     console.log("Impiegato options:" + idImpiegato);
     res.send({"ris":"ok"});
   });
-
+*/
 app.post("/api/QRCheck",function(req,res,next){
     let QRCode = req.body.data;
     let idImpiegato = req.body.user;
