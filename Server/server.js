@@ -163,7 +163,7 @@ app.post("/api/QRCheck",function(req,res,next){
                        esito = true;
                        res.writeHead(200);
                        res.contentType("application/json");
-                       res.send({"ris":"ok"});
+                       res.sed({"ris":"ok"});
                    }else{
                        esito = false;
                        console.log("Errore data");
@@ -184,7 +184,6 @@ function insertLog(QRCodeId,idImpiegato){
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             console.log(err);
-            res.send({"ris":"err"});
         }
         else {
             let oraLog = new Date();
