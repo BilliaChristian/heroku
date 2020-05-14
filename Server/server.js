@@ -175,7 +175,8 @@ app.post("/api/QRCheck",function(req,res,next){
             }  
          
     });
-    insertLog(QRCodeId,idImpiegato);
+    if(esito)
+        insertLog(QRCodeId,idImpiegato);
 });
 
 function insertLog(QRCodeId,idImpiegato){
