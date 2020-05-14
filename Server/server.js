@@ -131,16 +131,16 @@ app.get("/api/QRCode",function(req,res,next){
 app.options('*', (req, res) => {
     let QRCode = req.body.data;
     let idImpiegato = req.body.user;
-    console.log("QRCODE: "+ QRCode);
-    console.log("Impiegato:" + idImpiegato);
+    console.log("QRCODE options: "+ QRCode);
+    console.log("Impiegato options:" + idImpiegato);
     res.send({"ris":"ok"});
   });
 
 app.post("/api/QRCheck",function(req,res,next){
     let QRCode = req.body.data;
     let idImpiegato = req.body.user;
-    console.log("QRCODE: "+ QRCode);
-    console.log("Impiegato:" + idImpiegato);
+    console.log("QRCODE: post "+ QRCode);
+    console.log("Impiegato: post " + idImpiegato);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"})
