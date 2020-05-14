@@ -176,7 +176,7 @@ app.post("/api/QRCheck",function(req,res,next){
 });
 
 function insertLog(QRCodeId,idImpiegato){
-    Console.log("Funzione");
+    console.log("Funzione");
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             console.log(err);
