@@ -129,6 +129,10 @@ app.get("/api/QRCode",function(req,res,next){
 });
 
 app.options('*', (req, res) => {
+    let QRCode = req.body.data;
+    let idImpiegato = req.body.user;
+    console.log("QRCODE: "+QrCode);
+    console.log("Impiegato:" + idImpiegato);
     res.json({
       status: 'OK'
     });
