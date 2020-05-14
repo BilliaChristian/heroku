@@ -118,8 +118,9 @@ app.get("/api/QRCode",function(req,res,next){
                 { sort: { _id: -1 } },
                 (err, data) => {
                          var QRCode = require('qrcode');
+                         console.log(JSON.stringify(data));
                          QRCode.toDataURL(JSON.stringify(data), function (err, url) {
-                            res.end("<!DOCTYPE html/><html><head><title>node-qrcode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
+                            res.end("<!DOCTYPE html/><html><head><title>QRCode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
                           });  
                      });          
             }          
