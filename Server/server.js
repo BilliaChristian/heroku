@@ -174,7 +174,7 @@ app.post("/api/QRCheck",function(req,res,next){
     });
 });
 
-function insertLog(data,idImpiegato){
+function insertLog(QrCode,idImpiegato){
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"});
@@ -183,7 +183,7 @@ function insertLog(data,idImpiegato){
             let oraLog = new Date();
             const DB = client.db('App');
             let collection = DB.collection('Log');
-            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":data._id},function(err) {
+            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":QrCode},function(err) {
                 if (err) throw err;
                 console.log("Nuovo LogInserito");
                 client.close();
