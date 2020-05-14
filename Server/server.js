@@ -5,7 +5,6 @@ const ERRORS = require('errors');
 const path = require('path');
 const express = require("express");
 const bodyParser = require('body-parser');
-const jwt = require("jsonwebtoken");
 const cors = require("cors");
 var serveStatic = require('serve-static');
 
