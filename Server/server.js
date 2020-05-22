@@ -58,7 +58,7 @@ app.get("/",function(req,res,next){
 // API LOGIN
 app.post("/api/login",function(res,req,next){
     console.log("API LOGIN");
-    console.log(req.body.user);
+    console.log(req.body);
     let username = req.body.user.split('.');
     let password = req.body.pwd;
     console.log(username);
