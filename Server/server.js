@@ -159,13 +159,14 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("DataUS: " + QRCodeCodice);
                    if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
+                       /*
                        let oraLog = new Date();
                        let collection = DB.collection('Log');
                        collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":QRCodeId},function(err) {
                            if (err) console.log(err);
                            else
                                console.log("Nuovo LogInserito");
-                       });
+                       });*/
                        res.send({"ris":"ok"});
                    }else{
                        console.log("Errore data");
