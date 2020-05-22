@@ -160,8 +160,13 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("DataUS: " + QRCodeCodice);
                    if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
-                       //insertLog(QRCodeId,idImpiegato);
-                 
+                       let oraLog = new Date();
+                       let collection = DB.collection('Log');
+                       collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":QRCodeId},function(err) {
+                           if (err) console.log(err);
+                           else
+                               console.log("Nuovo LogInserito");
+                       });
                        res.send({"ris":"ok"});
                    }else{
                        console.log("Errore data");
@@ -171,30 +176,11 @@ app.post("/api/QRCheck",function(req,res,next){
               );
             
             }  
-         
+            client.close();
     });
         
 });
 
-function insertLog(QRCodeId,idImpiegato){
-    console.log("Funzione");
-    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
-        if (err){
-            console.log(err);
-        }
-        else {
-            let oraLog = new Date();
-            const DB = client.db('App');
-            let collection = DB.collection('Log');
-            collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":QRCodeId},function(err) {
-                if (err) console.log(err);
-                else
-                    console.log("Nuovo LogInserito");
-                client.close();
-        });
-    }
-});
-}
 
 
 //API Calendario
