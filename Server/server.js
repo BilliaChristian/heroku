@@ -44,9 +44,9 @@ app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
 app.options('*', cors(corsOptions));
-
 app.listen(port)
 console.log('server started ' + port);
+
 app.use(bodyParser.json());
 app.get("/",function(req,res,next){
     res.writeHead(200);
@@ -54,14 +54,10 @@ app.get("/",function(req,res,next){
 });
 
 
-app.post("/api/test",function(req,res){
-    res.send({"ris":req.body.test});
-});
 
 // API LOGIN
 app.post("/api/login",function(res,req,next){
-    console.log("API LOGIN");
-    console.log(req.body);
+    console.log("API LOGIN")
     let username = req.body.user.split('.');
     let password = req.body.pwd;
     console.log(username);
@@ -140,11 +136,12 @@ app.get("/api/QRCode",function(req,res,next){
 });
 
 app.post("/api/QRCheck",function(req,res,next){
+    console.log("QRUS pre: "+req.body.id);
+    console.log("DataUS pre: "+req.body.codice);
+    console.log("Impiegato pre: "+req.body.user);
     let QRCodeId = req.body.id;
     let QRCodeCodice = req.body.codice;
     let idImpiegato = req.body.user;
-    console.log(QRCodeId);
-    console.log(QRCodeCodice);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"})
@@ -154,7 +151,7 @@ app.post("/api/QRCheck",function(req,res,next){
             let collection = DB.collection('QRCode');
             collection.findOne(
                 {},
-                { sort: { "_id": -1 } },
+                { sort: { _id: -1 } },
                 (err, data) => {
                     console.log("QRDB: "+data._id);
                     console.log("QRUS: " + QRCodeId );
@@ -162,9 +159,10 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("DataUS: " + QRCodeCodice);
                    if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
-                       //insertLog(QRCodeId,idImpiegato,client);
+                       //insertLog(QRCodeId,idImpiegato);
+
                        res.contentType("application/json");
-                       res.writeHead(200);                    
+                       res.setHeader(200);                    
                        res.end({"ris":"ok"});
                    }else{
                        console.log("Errore data");
@@ -174,20 +172,28 @@ app.post("/api/QRCheck",function(req,res,next){
               );
             
             }  
-            client.close(); 
+         
     });
         
 });
 
-function insertLog(QRCodeId,idImpiegato,client){
+function insertLog(QRCodeId,idImpiegato){
     console.log("Funzione");
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            console.log(err);
+        }
+        else {
             let oraLog = new Date();
             const DB = client.db('App');
             let collection = DB.collection('Log');
             collection.insertOne({"oraLog":oraLog,"idImpiegato":idImpiegato,"idQRcode":QRCodeId},function(err) {
                 if (err) console.log(err);
                 else
-                    console.log("Nuovo LogInserito");    
+                    console.log("Nuovo LogInserito");
+                client.close();
+        });
+    }
 });
 }
 
