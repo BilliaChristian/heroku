@@ -44,10 +44,10 @@ app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
 app.options('*', cors(corsOptions));
+app.use(bodyParser.json());
 app.listen(port)
 console.log('server started ' + port);
 
-app.use(bodyParser.json());
 app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
