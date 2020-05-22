@@ -159,10 +159,7 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("DataUS: " + QRCodeCodice);
                    if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
-                       //insertLog(QRCodeId,idImpiegato);
-
-                       res.contentType("application/json");
-                       res.writeHead(200);                    
+                       //insertLog(QRCodeId,idImpiegato);                  
                        res.end({"ris":"ok"});
                    }else{
                        console.log("Errore data");
