@@ -44,16 +44,19 @@ app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
 app.options('*', cors(corsOptions));
-app.use(bodyParser.json());
+
 app.listen(port)
 console.log('server started ' + port);
-
+app.use(bodyParser.json());
 app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
 });
 
 
+app.post("/api/test",function(req,res){
+    res.send({"ris":req.body.test});
+});
 
 // API LOGIN
 app.post("/api/login",function(res,req,next){
