@@ -44,10 +44,10 @@ app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
 app.options('*', cors(corsOptions));
-app.use(bodyParser.json());
 app.listen(port)
 console.log('server started ' + port);
 
+app.use(bodyParser.json());
 app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
@@ -159,8 +159,9 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("DataUS: " + QRCodeCodice);
                    if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
-                       //insertLog(QRCodeId,idImpiegato);
-                 
+                       insertLog(QRCodeId,idImpiegato);
+
+                       res.contentType("application/json");                  
                        res.send({"ris":"ok"});
                    }else{
                        console.log("Errore data");
@@ -170,7 +171,7 @@ app.post("/api/QRCheck",function(req,res,next){
               );
             
             }  
-            client.close();
+         client.close();
     });
         
 });
@@ -189,7 +190,7 @@ function insertLog(QRCodeId,idImpiegato){
                 if (err) console.log(err);
                 else
                     console.log("Nuovo LogInserito");
-                
+                client.close();
         });
     }
 });
