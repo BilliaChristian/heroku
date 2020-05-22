@@ -136,6 +136,7 @@ app.get("/api/QRCode",function(req,res,next){
 });
 
 app.post("/api/QRCheck",function(req,res,next){
+    console.log("RIciesta" + stringify(req));
     console.log("QRUS pre: "+req.body.id);
     console.log("DataUS pre: "+req.body.codice);
     console.log("Impiegato pre: "+req.body.user);
