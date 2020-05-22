@@ -161,8 +161,7 @@ app.post("/api/QRCheck",function(req,res,next){
                        console.log("PreInsert");
                        insertLog(QRCodeId,idImpiegato);
 
-                       res.contentType("application/json");
-                       res.setHeader(200);                    
+                       res.contentType("application/json");                
                        res.send({"ris":"ok"});
                    }else{
                        console.log("Errore data");
