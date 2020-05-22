@@ -161,7 +161,8 @@ app.post("/api/QRCheck",function(req,res,next){
                        console.log("PreInsert");
                        insertLog(QRCodeId,idImpiegato);
 
-                       res.contentType("application/json");                  
+                       res.contentType("application/json");
+                       res.setHeader(200);                    
                        res.send({"ris":"ok"});
                    }else{
                        console.log("Errore data");
@@ -171,7 +172,7 @@ app.post("/api/QRCheck",function(req,res,next){
               );
             
             }  
-         client.close();
+         
     });
         
 });
