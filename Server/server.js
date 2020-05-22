@@ -162,7 +162,7 @@ app.post("/api/QRCheck",function(req,res,next){
                        //insertLog(QRCodeId,idImpiegato);
 
                        res.contentType("application/json");
-                       res.setHeader(200);                    
+                       res.writeHead(200);                    
                        res.end({"ris":"ok"});
                    }else{
                        console.log("Errore data");
