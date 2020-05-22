@@ -44,10 +44,10 @@ app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
 app.options('*', cors(corsOptions));
+app.use(bodyParser.json());
 app.listen(port)
 console.log('server started ' + port);
 
-app.use(bodyParser.json());
 app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
@@ -136,7 +136,6 @@ app.get("/api/QRCode",function(req,res,next){
 });
 
 app.post("/api/QRCheck",function(req,res,next){
-    console.log("Richiesta" + req);
     console.log("QRUS pre: "+req.body.id);
     console.log("DataUS pre: "+req.body.codice);
     console.log("Impiegato pre: "+req.body.user);
@@ -160,7 +159,8 @@ app.post("/api/QRCheck",function(req,res,next){
                     console.log("DataUS: " + QRCodeCodice);
                    if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
-                       //insertLog(QRCodeId,idImpiegato);                  
+                       //insertLog(QRCodeId,idImpiegato);
+                 
                        res.send({"ris":"ok"});
                    }else{
                        console.log("Errore data");
