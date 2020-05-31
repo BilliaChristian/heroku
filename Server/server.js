@@ -91,6 +91,9 @@ app.post("/api/login",function(req,res,next){
                             }
                             else {           
                                 console.log("Accesso eseguito");
+                                res.setHeader("Access-Control-Allow-Origin", "*");
+                                res.setHeader('Access-Control-Allow-Credentials', true);
+                                res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
                                 res.contentType("application/json");                 
                                 res.send({"ris":"ok","rank":dbUser.rank});
                             }
