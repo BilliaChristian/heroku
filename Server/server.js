@@ -54,7 +54,7 @@ app.get("/",function(req,res,next){
 });
 
 app.post("/api/test",function(res,req,next){
-
+        res.contentType("application/json");  
         res.send({"ris":"PROVA"});
 });
 
