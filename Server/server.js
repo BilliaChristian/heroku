@@ -61,10 +61,11 @@ app.post("/api/test",function(res,req,next){
 
 // API LOGIN
 app.post("/api/login",function(req,res,next){
-    console.log(req);
+    //console.log(req);
     console.log(req.body.user);
     let username = req.body.user.split('.');
     let password = req.body.pwd;
+    console.log(username[0]+"+"+username[1]+"+"+username[2])
     console.log(username);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
