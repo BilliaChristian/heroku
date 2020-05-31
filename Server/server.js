@@ -41,7 +41,23 @@ const corsOptions = {
   }
 
 app.use(serveStatic(path.join(__dirname, 'dist')))
+app.use(function (req, res, next) {
 
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', "*");
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    next();
+});
 var port = process.env.PORT || 8888
 app.options('*', cors(corsOptions));
 app.use(bodyParser.json());
@@ -91,9 +107,6 @@ app.post("/api/login",function(req,res,next){
                             }
                             else {           
                                 console.log("Accesso eseguito");
-                                res.setHeader("Access-Control-Allow-Origin", "*");
-                                res.setHeader('Access-Control-Allow-Credentials', true);
-                                res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
                                 res.contentType("application/json");                 
                                 res.send({"ris":"ok","rank":dbUser.rank});
                             }
