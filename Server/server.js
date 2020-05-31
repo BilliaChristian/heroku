@@ -60,7 +60,7 @@ app.post("/api/test",function(res,req,next){
 
 // API LOGIN
 app.post("/api/login",function(res,req,next){
-    console.log(req.body);
+    console.log(req);
     let username = req.body.user.split('.');
     let password = req.body.pwd;
     console.log(username);
