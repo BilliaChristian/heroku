@@ -53,7 +53,10 @@ app.get("/",function(req,res,next){
     res.end("HOME");
 });
 
+app.post("/api/test",function(res,req,next){
 
+        res.send({"ris":"PROVA"});
+});
 
 // API LOGIN
 app.post("/api/login",function(res,req,next){
@@ -74,15 +77,18 @@ app.post("/api/login",function(res,req,next){
                     else {
                         if (dbUser == null){
                             console.log("Errore dbuser");
+                            res.contentType("application/json");  
                             res.send({"ris":"errUser"})
                         }
                         else {  
                             if (dbUser.pwd != password){                                
                                 console.log("Errore dbpwd");
+                                res.contentType("application/json");  
                                 res.send({"ris":"errPwd"})
                             }
                             else {           
-                                console.log("Accesso eseguito");               
+                                console.log("Accesso eseguito");
+                                res.contentType("application/json");                 
                                 res.send({"ris":"ok","rank":dbUser.rank});
                             }
                         }
@@ -165,6 +171,7 @@ app.post("/api/QRCheck",function(req,res,next){
                        res.send({"ris":"ok"});
                    }else{
                        console.log("Errore data");
+                       res.contentType("application/json");  
                        res.send({"ris":"err"});
                    }
                 },
