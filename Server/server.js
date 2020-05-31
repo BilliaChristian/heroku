@@ -44,10 +44,11 @@ app.use(serveStatic(path.join(__dirname, 'dist')))
 
 var port = process.env.PORT || 8888
 app.options('*', cors(corsOptions));
+app.use(bodyParser.json());
 app.listen(port)
 console.log('server started ' + port);
 
-app.use(bodyParser.json());
+
 app.get("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
@@ -61,6 +62,7 @@ app.post("/api/test",function(res,req,next){
 // API LOGIN
 app.post("/api/login",function(res,req,next){
     console.log(req);
+    console.log(req.body.user);
     let username = req.body.user.split('.');
     let password = req.body.pwd;
     console.log(username);
