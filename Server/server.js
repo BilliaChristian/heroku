@@ -60,7 +60,7 @@ app.post("/api/test",function(res,req,next){
 });
 
 // API LOGIN
-app.post("/api/login",function(res,req,next){
+app.post("/api/login",function(req,res,next){
     console.log(req);
     console.log(req.body.user);
     let username = req.body.user.split('.');
