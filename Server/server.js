@@ -73,7 +73,7 @@ app.post("/api/login",function(req,res,next){
         }
         else {
             const DB = client.db('App');
-            let collection = DB.collection('User');
+            let collection = DB.collection('user');
                 collection.findOne({ "_id.nome": username[0],"_id.cognome": username[1],"_id.codice": parseInt(username[2])}, function(err, dbUser) {
                     if (err){
                         res.send({"ris":"err"})}
