@@ -270,7 +270,7 @@ app.post("/api/componentiTeam",function(req,res){
                 if (err) res.send({"ris":"err"});
                 else{
                     console.log(result);
-                    let ris = {};
+                    let ris = [];
                     result.forEach(element => {
                         ris.push({"idComponente":element._id,"team":element.team.nome});
                     });
