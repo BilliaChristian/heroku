@@ -141,7 +141,7 @@ app.get("/api/newQRCode",function(req,res,next){
 app.get("/api/QRCode",function(req,res,next){     
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
-            res.send({"ris":"err"})
+            res.send({"ris":"err"});
         }
         else {
             const DB = client.db('App');
@@ -153,7 +153,7 @@ app.get("/api/QRCode",function(req,res,next){
                          var QRCode = require('qrcode');
                          console.log(JSON.stringify(data));
                          QRCode.toDataURL(JSON.stringify(data), function (err, url) {
-                            res.end("<!DOCTYPE html/><html><head><title>QRCode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
+                         res.end("<!DOCTYPE html/><html><head><title>QRCode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
                           });  
                      });          
             }          
@@ -240,6 +240,35 @@ app.post("/api/calendario", function(req,res){
                     if (err) res.send({"ris":"err"});
                       else{
                         res.send(JSON.stringify(data));
+                      }
+                   
+                },
+              );
+            
+            }          
+    });
+});
+
+
+//API Team
+
+app.post("/api/componentiTeam",function(req,res){
+    let idTeamLeader = req.body;
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('user');
+            collection.find(
+                {"team.idLeader": idTeamLeader},
+                (err, data) => {
+                    if (err) res.send({"ris":"err"});
+                      else{
+                          let ris = {"idComponente":data._id,"teamName":data.team.nome,"posizione":data.team.posizione,"stato":data.team.stato};
+                        res.send(JSON.stringify(ris));
                       }
                    
                 },
