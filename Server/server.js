@@ -272,7 +272,7 @@ app.post("/api/componentiTeam",function(req,res){
                     result = JSON.stringify(result);
                     console.log(result);
                     
-                    let ris = {"idComponente":result._id,"teamName":result.team.nome,"posizione":result.team.posizione,"stato":result.team.stato};
+                    let ris = {"idComponente":result._id,"teamName":result[0].team.nome,"posizione":result[0].team.posizione,"stato":result[0].team.stato};
                   res.send(JSON.stringify(ris));
                 }
                });
