@@ -263,12 +263,13 @@ app.post("/api/componentiTeam",function(req,res){
             const DB = client.db('App');
             let collection = DB.collection('user');
             collection.find(
-                {"team.idLeader": idTeamLeader}               
+                {"team.idLeader": idTeamLeader},
+                { projection: { _id: 1, team: 1,  } }               
               ).toArray(function (err,result) { 
 
                 if (err) res.send({"ris":"err"});
                 else{
-                    console.log(result);
+                    console.log(JSON.stringify(result));
                     let ris = {"idComponente":result._id,"teamName":result.team.nome,"posizione":result.team.posizione,"stato":result.team.stato};
                   res.send(JSON.stringify(ris));
                 }
