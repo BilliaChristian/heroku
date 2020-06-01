@@ -267,6 +267,7 @@ app.post("/api/componentiTeam",function(req,res){
                 (err, data) => {
                     if (err) res.send({"ris":"err"});
                       else{
+                          console.log(data);
                           let ris = {"idComponente":data._id,"teamName":data.team.nome,"posizione":data.team.posizione,"stato":data.team.stato};
                         res.send(JSON.stringify(ris));
                       }
