@@ -269,7 +269,6 @@ app.post("/api/componentiTeam",function(req,res){
 
                 if (err) res.send({"ris":"err"});
                 else{
-                    result = JSON.stringify(result);
                     console.log(result);
                     let ris = {};
                     result.forEach(element => {
