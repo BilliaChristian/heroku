@@ -272,7 +272,7 @@ app.post("/api/componentiTeam",function(req,res){
                     console.log(result);
                     let ris = {};
                     result.forEach(element => {
-                        ris += {"idComponente":element._id,"team":element.team.nome};
+                        ris.push({"idComponente":element._id,"team":element.team.nome});
                     });
                     
                     console.log(JSON.stringify(ris));
