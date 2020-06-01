@@ -271,8 +271,11 @@ app.post("/api/componentiTeam",function(req,res){
                 else{
                     result = JSON.stringify(result);
                     console.log(result);
+                    let ris = {};
+                    result.forEach(element => {
+                        ris += {"idComponente":element._id,"team":element.team};
+                    });
                     
-                    let ris = {"idComponente":result._id,"team":result.team};
                     console.log(ris);
                   res.send(JSON.stringify(ris));
                 }
