@@ -268,8 +268,8 @@ app.post("/api/componentiTeam",function(req,res){
 
                 if (err) res.send({"ris":"err"});
                 else{
-                    console.log(data);
-                    let ris = {"idComponente":data._id,"teamName":data.team.nome,"posizione":data.team.posizione,"stato":data.team.stato};
+                    console.log(result);
+                    let ris = {"idComponente":result._id,"teamName":result.team.nome,"posizione":result.team.posizione,"stato":result.team.stato};
                   res.send(JSON.stringify(ris));
                 }
                });
