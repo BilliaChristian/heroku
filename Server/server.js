@@ -263,17 +263,16 @@ app.post("/api/componentiTeam",function(req,res){
             const DB = client.db('App');
             let collection = DB.collection('user');
             collection.find(
-                {"team.idLeader": idTeamLeader},
-                (err, data) => {
-                    if (err) res.send({"ris":"err"});
-                      else{
-                          console.log(data);
-                          let ris = {"idComponente":data._id,"teamName":data.team.nome,"posizione":data.team.posizione,"stato":data.team.stato};
-                        res.send(JSON.stringify(ris));
-                      }
-                   
-                },
-              );
+                {"team.idLeader": idTeamLeader}               
+              ).toArray(function (err,result) { 
+
+                if (err) res.send({"ris":"err"});
+                else{
+                    console.log(data);
+                    let ris = {"idComponente":data._id,"teamName":data.team.nome,"posizione":data.team.posizione,"stato":data.team.stato};
+                  res.send(JSON.stringify(ris));
+                }
+               });
             
             }          
     });
