@@ -253,7 +253,7 @@ app.post("/api/calendario", function(req,res){
 //API Team
 
 app.post("/api/componentiTeam",function(req,res){
-    let idTeamLeader = req.body;
+    let idTeamLeader = req.body.id;
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
