@@ -288,8 +288,9 @@ app.post("/api/componentiTeam",function(req,res){
 });
 
 app.post("/api/progettiTeam",function(req,res){
+    console.log(req.body);
     let idTeamLeader = req.body.id;
-
+    
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
             res.send({"ris":"err"});
@@ -319,6 +320,7 @@ app.post("/api/progettiTeam",function(req,res){
 });
 
 app.post("/api/taskProgetto",function(req,res){
+    
     let idProgetto = req.body.idProgetto;
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
