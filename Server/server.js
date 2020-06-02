@@ -346,6 +346,38 @@ app.post("/api/taskProgetto",function(req,res){
     });
 });
 
+app.post("/api/taskUtente",function(req,res){
+    let idUtente = req.body.idUtente;
+    let idProgetto = req.body.idProgetto;
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('task');
+            collection.find(
+                {"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":idUtente}           
+              ).toArray(function (err,result) { 
+
+                if (err) res.send({"ris":"err"});
+                else{
+                    console.log(result);
+                    let ris = [];
+                    result.forEach(element => {
+                        ris.push([element]);
+                    });
+                    
+                    console.log(JSON.stringify(ris));
+                  res.send(JSON.stringify(ris));
+                }
+               });
+            
+            }          
+    });
+});
+
 app.post("/api/aggiuntaTask",function(req,res){
     let idProgetto ="5ed607ab4f3a7496c80fdd9b";
     let nomeTask = "NOME INSERT";
@@ -360,7 +392,7 @@ app.post("/api/aggiuntaTask",function(req,res){
             const DB = client.db('App');
             let collection = DB.collection('task');
             collection.insertOne(
-                {"nome":nomeTask,"descrizione":descTask,"scadenza":new Date(dataScadenza).toISOString(),"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":{},"stato":"L"},
+                {"nome":nomeTask,"descrizione":descTask,"scadenza":new Date(dataScadenza).toISOString(),"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":"","stato":"L"},
                 (err, data) => {
                     if (err) res.send({"ris":"err"});
                       else{
