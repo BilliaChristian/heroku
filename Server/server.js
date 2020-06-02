@@ -351,6 +351,37 @@ app.post("/api/taskProgetto",function(req,res){
     });
 });
 
+app.post("/api/microTask",function(req,res){
+    let idProgetto = req.body.idProgetto;
+    let idTask = req.body.idTask;
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('task');
+            collection.find(
+                {"idProgetto": mongoose.Types.ObjectId(idProgetto),"idTask": mongoose.Types.ObjectId(idTask)}           
+              ).toArray(function (err,result) { 
+
+                if (err) res.send({"ris":"err"});
+                else{
+                    console.log(result);
+                    let ris = [];
+                    result.forEach(element => {
+                        ris.push(element);
+                    });
+                    
+                    console.log(JSON.stringify(ris));
+                  res.send(JSON.stringify(ris));
+                }
+               });
+            
+            }          
+    });
+});
+
 app.get("/api/taskUtente",function(req,res){
     let idUtente = req.query.idUtente;
     let idProgetto = req.query.idProgetto;
