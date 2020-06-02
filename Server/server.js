@@ -345,3 +345,31 @@ app.post("/api/taskProgetto",function(req,res){
             }          
     });
 });
+
+app.post("/api/aggiuntaTask",function(req,res){
+    let idProgetto ="5ed607ab4f3a7496c80fdd9b";
+    let nomeTask = "NOME INSERT";
+    let descTask = "DESC INSERT";
+    let dataScadenza = "2020-12-13T09:08:18.441Z";
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('task');
+            collection.insertOne(
+                {"nome":nomeTask,"descrizione":descTask,"scadenza":new Date(dataScadenza).toISOString(),"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":{},"stato":"L"},
+                (err, data) => {
+                    if (err) res.send({"ris":"err"});
+                      else{
+                        res.send(JSON.stringify(data));
+                      }
+                   
+                },
+              );
+            
+            }          
+    });
+});
