@@ -283,3 +283,65 @@ app.post("/api/componentiTeam",function(req,res){
             }          
     });
 });
+
+app.post("/api/progettiTeam",function(req,res){
+    let idTeamLeader = req.body.id;
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('progetti');
+            collection.find(
+                {"team.idLeader": idTeamLeader}           
+              ).toArray(function (err,result) { 
+
+                if (err) res.send({"ris":"err"});
+                else{
+                    console.log(result);
+                    let ris = [];
+                    result.forEach(element => {
+                        ris.push([element]);
+                    });
+                    
+                    console.log(JSON.stringify(ris));
+                  res.send(JSON.stringify(ris));
+                }
+               });
+            
+            }          
+    });
+});
+
+app.post("/api/taskProgetto",function(req,res){
+    let idProgetto = req.body.idProgetto;
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('task');
+            collection.find(
+                {"idProgetto": idProgetto}           
+              ).toArray(function (err,result) { 
+
+                if (err) res.send({"ris":"err"});
+                else{
+                    console.log(result);
+                    let ris = [];
+                    result.forEach(element => {
+                        ris.push([element]);
+                    });
+                    
+                    console.log(JSON.stringify(ris));
+                  res.send(JSON.stringify(ris));
+                }
+               });
+            
+            }          
+    });
+});
