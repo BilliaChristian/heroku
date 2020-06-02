@@ -369,7 +369,7 @@ app.get("/api/taskUtente",function(req,res){
                     console.log(result);
                     let ris = [];
                     result.forEach(element => {
-                        ris.push([element]);
+                        ris.push(element);
                     });
                     
                     console.log(JSON.stringify(ris));
