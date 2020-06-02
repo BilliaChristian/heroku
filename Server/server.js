@@ -320,7 +320,7 @@ app.post("/api/progettiTeam",function(req,res){
 });
 
 app.post("/api/taskProgetto",function(req,res){
-    
+    console.log(req.body);
     let idProgetto = req.body.idProgetto;
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
