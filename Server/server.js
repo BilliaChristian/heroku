@@ -331,7 +331,7 @@ app.post("/api/taskProgetto",function(req,res){
             const DB = client.db('App');
             let collection = DB.collection('task');
             collection.find(
-                {"idProgetto": mongoose.Types.ObjectId(idProgetto)}           
+                {"idProgetto": mongoose.Types.ObjectId(idProgetto),"tipo":"T"}           
               ).toArray(function (err,result) { 
 
                 if (err) res.send({"ris":"err"});
