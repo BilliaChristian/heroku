@@ -108,7 +108,7 @@ app.post("/api/login",function(req,res,next){
                             else {           
                                 console.log("Accesso eseguito");
                                 res.contentType("application/json");                 
-                                res.send({"ris":"ok","rank":dbUser.rank});
+                                res.send({"ris":"ok","tipo":dbUser.tipo});
                             }
                         }
                     }
@@ -272,7 +272,8 @@ app.post("/api/componentiTeam",function(req,res){
                     console.log(result);
                     let ris = [];
                     result.forEach(element => {
-                        ris.push([{"idComponente":element._id,"nomeTeam":element.team.nome,"stato":element.team.stato,"ruolo":element.team.ruolo}]);
+                        let idComponente = element.id.nome+"."+element.id.cognome+"."+element.id.codice;
+                        ris.push([{"idComponente":idComponente,"nomeTeam":element.team.nome,"stato":element.team.stato,"ruolo":element.team.ruolo}]);
                     });
                     
                     console.log(JSON.stringify(ris));
@@ -393,7 +394,7 @@ app.post("/api/aggiuntaTask",function(req,res){
             const DB = client.db('App');
             let collection = DB.collection('task');
             collection.insertOne(
-                {"nome":nomeTask,"descrizione":descTask,"scadenza":new Date(dataScadenza).toISOString(),"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":[],"tipo":"M","stato":"L"},
+                {"nome":nomeTask,"descrizione":descTask,"scadenza":new Date(dataScadenza).toISOString(),"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":[],"tipo":tipologia,"stato":"L","commento":[]},
                 (err, data) => {
                     if (err) res.send({"ris":"err"});
                       else{
@@ -405,4 +406,9 @@ app.post("/api/aggiuntaTask",function(req,res){
             
             }          
     });
+});
+
+
+app.post("/api/richiestaRevisione",function(req,res){
+
 });
