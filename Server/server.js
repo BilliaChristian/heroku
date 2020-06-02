@@ -349,9 +349,9 @@ app.post("/api/taskProgetto",function(req,res){
     });
 });
 
-app.post("/api/taskUtente",function(req,res){
-    let idUtente = req.body.idUtente;
-    let idProgetto = req.body.idProgetto;
+app.get("/api/taskUtente",function(req,res){
+    let idUtente = req.query.idUtente;
+    let idProgetto = req.query.idProgetto;
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err){
