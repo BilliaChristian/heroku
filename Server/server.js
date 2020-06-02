@@ -410,5 +410,26 @@ app.post("/api/aggiuntaTask",function(req,res){
 
 
 app.post("/api/richiestaRevisione",function(req,res){
+    let idTask =req.body.idTask;
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('task');
+            collection.updateOne({_id: mongoose.Types.ObjectId(idTask)}, {$set:{"stato":"R"}}, function(err, result) {
+                if (err)
+                   res.send({"ris":"err"});
+                else
+                    res.send({"ris":"ok"});
+            });
+        }
+    });
+});
+
+
+    app.post("/api/revisione",function (req,res) {
 
 });
