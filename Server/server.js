@@ -306,11 +306,11 @@ app.post("/api/progettiTeam",function(req,res){
                     console.log(result);
                     let ris = [];
                     result.forEach(element => {
-                        ris.push([element]);
+                        ris.push(element);
                     });
                     
                     console.log(JSON.stringify(ris));
-                  res.send(JSON.stringify(ris));
+                    res.send(JSON.stringify(ris));
                 }
                });
             
@@ -337,7 +337,7 @@ app.post("/api/taskProgetto",function(req,res){
                     console.log(result);
                     let ris = [];
                     result.forEach(element => {
-                        ris.push([element]);
+                        ris.push(element);
                     });
                     
                     console.log(JSON.stringify(ris));
@@ -385,6 +385,7 @@ app.post("/api/aggiuntaTask",function(req,res){
     let idProgetto ="5ed607ab4f3a7496c80fdd9b";
     let nomeTask = "NOME INSERT";
     let descTask = "DESC INSERT";
+    let dataInizio = new Date.now();
     let dataScadenza = "2020-12-13T09:08:18.441Z";
     let tipologia = "T";
 
@@ -396,7 +397,7 @@ app.post("/api/aggiuntaTask",function(req,res){
             const DB = client.db('App');
             let collection = DB.collection('task');
             collection.insertOne(
-                {"nome":nomeTask,"descrizione":descTask,"scadenza":new Date(dataScadenza).toISOString(),"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":[],"tipo":tipologia,"stato":"L","commento":[]},
+                {"nome":nomeTask,"descrizione":descTask,"dataInizio":dataInizio,"scadenza":new Date(dataScadenza).toISOString(),"idProgetto": mongoose.Types.ObjectId(idProgetto),"idImpiegato":[],"tipo":tipologia,"stato":"L","commento":[]},
                 (err, data) => {
                     if (err) res.send({"ris":"err"});
                       else{
@@ -410,7 +411,26 @@ app.post("/api/aggiuntaTask",function(req,res){
     });
 });
 
-
+app.post("/api/assegnaTask",function(req,res){
+    let idTask = req.body.idTask;
+    let idImpiegato = req.body.idImpiegato;
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('task');
+            collection.updateOne({_id: mongoose.Types.ObjectId(idTask)}, {$push:{"idImpiegato":idImpiegato}}, function(err, result) {
+                if (err)
+                   res.send({"ris":"err"});
+                else
+                    res.send({"ris":"ok"});
+            });
+            
+            }          
+    });
+});
 app.post("/api/richiestaRevisione",function(req,res){
     let idTask =req.body.idTask;
 
