@@ -615,7 +615,7 @@ app.post("/api/aggiuntaTask", function (req, res) {
     let nomeTask = req.body.nome;
     let descTask = req.body.desc;
     let dataInizio =  Date.now();
-    let dataScadenza = new Date(req.body.dataScadenza);
+    let dataScadenza = req.body.dataScadenza;
     let idTask;
     try {
         idTask = req.body.idTask;
@@ -627,9 +627,9 @@ app.post("/api/aggiuntaTask", function (req, res) {
     let query;
 
     if (idTask == null) {
-        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio, "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
+        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio.toISOString(), "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
     } else {
-        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio, "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idTask": mongoose.Types.ObjectId(idTask), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
+        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio.toISOString(), "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idTask": mongoose.Types.ObjectId(idTask), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
 
     }
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
