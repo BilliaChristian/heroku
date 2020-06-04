@@ -398,7 +398,10 @@ app.post("/api/componentiTeam", function (req, res) {
                 { projection: { _id: 1, team: 1, } }
             ).toArray(function (err, result) {
 
-                if (err) res.send({ "ris": "err" });
+                if (err) {
+                    console.log(err);
+                    res.send({ "ris": "err" });
+                }
                 else {
                     console.log(result);
                     let ris = [];
