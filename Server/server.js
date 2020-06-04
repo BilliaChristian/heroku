@@ -145,7 +145,7 @@ app.post("/api/register", function (req, res, next) {
     let cognome = req.body.cognome;
     let tipologia = req.body.tipologia;
     let codice = Math.random() * (10000 - 1000) + 1000
-    let password = nome+"."+cognome+"."+codice;
+    let password = nome + "." + cognome + "." + codice;
 
     console.log(username[0] + "+" + username[1] + "+" + username[2])
     console.log(username);
@@ -520,7 +520,7 @@ app.post("/api/taskProgetto", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('task');
             collection.find(
-                { "idProgetto": mongoose.Types.ObjectId(idProgetto)}
+                { "idProgetto": mongoose.Types.ObjectId(idProgetto) }
             ).toArray(function (err, result) {
 
                 if (err) res.send({ "ris": "err" });
@@ -558,7 +558,7 @@ app.post("/api/microTask", function (req, res) {
 
                 if (err) res.send({ "ris": "err" });
                 else {
-                    console.log(result);
+                    //console.log(result);
                     let ris = [];
                     result.forEach(element => {
                         ris.push(element);
@@ -592,7 +592,7 @@ app.get("/api/taskUtente", function (req, res) {
 
                 if (err) res.send({ "ris": "err" });
                 else {
-                    console.log(result);
+                    //console.log(result);
                     let ris = [];
                     result.forEach(element => {
                         ris.push(element);
@@ -610,13 +610,27 @@ app.get("/api/taskUtente", function (req, res) {
 });
 
 app.post("/api/aggiuntaTask", function (req, res) {
-    let idProgetto = "5ed607ab4f3a7496c80fdd9b";
-    let nomeTask = "NOME INSERT";
-    let descTask = "DESC INSERT";
+    let idProgetto = req.body.idProgetto;
+    let nomeTask = req.body.nome;
+    let descTask = req.body.desc;
     let dataInizio = new Date.now();
-    let dataScadenza = "2020-12-13T09:08:18.441Z";
-    let tipologia = "T";
+    let dataScadenza = new Date(req.body.dataScadenza);
+    let idTask;
+    try {
+        idTask = req.body.idTask;
+    } catch{
+        idTask = null;
+    }
+    let tipologia = req.body.tipo;
 
+    let query;
+
+    if (idTask == null) {
+        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio, "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
+    } else {
+        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio, "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idTask": mongoose.Types.ObjectId(idTask), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
+
+    }
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
             res.send({ "ris": "err" });
@@ -625,7 +639,7 @@ app.post("/api/aggiuntaTask", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('task');
             collection.insertOne(
-                { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio, "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] },
+                query,
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
                     else {
