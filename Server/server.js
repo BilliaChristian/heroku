@@ -84,11 +84,11 @@ app.post("/api/test",function(res,req,next){
                         res.send({"ris":"err"})}
                     else {
                         console.log("Nuovo Utente");
-          client.close();
                     }
-                    client.close();
+                   
                 });
-            }      
+            }  
+            client.close();    
     });
 });
 
@@ -158,6 +158,7 @@ app.post("/api/register",function(req,res,next){
                     if (err){
                         res.send({"ris":"err"})}
                     else {
+                        res.send({"ris":"ok"});
                         console.log("Nuovo Utente");
           client.close();
                     }
@@ -276,7 +277,8 @@ app.get("/api/QRCode",function(req,res,next){
                          res.end("<!DOCTYPE html/><html><head><title>QRCode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
                           });  
                      });          
-            }          
+            }   
+        client.close();       
     });    
 });
 
@@ -336,7 +338,7 @@ function insertLog(QRCodeId,idImpiegato){
                 if (err) console.log(err);
                 else
                     console.log("Nuovo LogInserito");
-                client.close();
+                
         });
     }
     client.close();
