@@ -610,6 +610,7 @@ app.get("/api/taskUtente", function (req, res) {
 });
 
 app.post("/api/aggiuntaTask", function (req, res) {
+    console.log(req.body.dataScadenza);
     let idProgetto = req.body.idProgetto;
     let nomeTask = req.body.nome;
     let descTask = req.body.desc;
