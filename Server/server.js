@@ -413,10 +413,11 @@ app.post("/api/componentiTeam", function (req, res) {
                     console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
+                client.close();
             });
 
         }
-        client.close();
+        
     });
 });
 
