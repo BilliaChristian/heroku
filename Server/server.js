@@ -119,6 +119,107 @@ app.post("/api/login",function(req,res,next){
             }      
     });
 });
+//API USER
+app.post("/api/register",function(req,res,next){
+
+    let nome = req.body.nome;
+    let cognome = req.body.cognome;
+    let tipologia = req.body.tipologia;
+    let codice = Math.random() * (9999 - 1000) + 1000
+    let password = nome.cognome.codice;
+
+    console.log(username[0]+"+"+username[1]+"+"+username[2])
+    console.log(username);
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"})
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('user');
+                collection.insertOne({ "_id.nome": nome,"_id.cognome": cognome,"_id.codice": parseInt(codice),"pwd":password,"tipo":tipologia}, function(err, dbUser) {
+                    if (err){
+                        res.send({"ris":"err"})}
+                    else {
+                        console.log("Nuovo Utente");
+          client.close();
+                    }
+                    client.close();
+                });
+            }      
+    });
+});
+
+app.post("/api/assegnaTeam",function(req,res){
+    let idUser = req.body.idUser.split(".");
+    let idTeam = req.body.idTeam;
+    let nomeTeam = req.body.nomeTeam;
+    let ruolo = req.body.ruolo;
+    let stato = req.body.stato;
+
+    let team = {"nome":nomeTeam,"idLeader":idTeam,"ruolo":ruolo,"stato":stato};
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('user');
+            collection.updateOne({"_id.nome" : idUser[0],"_id.cognome" : idUser[1],"_id.codice" : parseInt(idUser[2])}, {"team":team}, function(err, result) {
+                if (err)
+                   res.send({"ris":"err"});
+                else
+                    res.send({"ris":"ok"});
+            });
+            
+            }        
+            client.close();  
+    });
+});
+
+app.post("/api/cambiapwd",function(req,res){
+    let idUser = req.body.idUser.split(".");
+    let oldPwd = req.body.oldPwd;
+    let newPwd = req.body.newPwd;
+
+    let team = {"nome":nomeTeam,"idLeader":idTeam,"ruolo":ruolo,"stato":stato};
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('user');
+            collection.findOne({ "_id.nome": idUser[0],"_id.cognome": idUser[1],"_id.codice": parseInt(idUser[2])}, function(err, dbUser) {
+                if (err){
+                    res.send({"ris":"err"})}
+                else {
+                    if (dbUser == null){
+                        console.log("Errore dbuser");
+                        res.contentType("application/json");  
+                        res.send({"ris":"errUser"})
+                    }
+                    else {  
+                        if (dbUser.pwd != oldPwd){                                
+                            console.log("Errore dbpwd");
+                            res.contentType("application/json");  
+                            res.send({"ris":"errPwd"})
+                        }
+                        else {           
+                            collection.updateOne({"_id.nome" : idUser[0],"_id.cognome" : idUser[1],"_id.codice" : parseInt(idUser[2])}, {"pwd":newPwd}, function(err, result) {
+                                if (err)
+                                   res.send({"ris":"err"});
+                                else
+                                    res.send({"ris":"ok"});
+                            });
+                        }
+                    }
+                }
+                client.close();
+            });
+        }
+    });
+});
 
 //API QR
 const QRcode = require("qr-image");
@@ -180,10 +281,10 @@ app.post("/api/QRCheck",function(req,res,next){
                 {},
                 { sort: { _id: -1 } },
                 (err, data) => {
-                    console.log("QRDB: "+data._id);
+                    /*console.log("QRDB: "+data._id);
                     console.log("QRUS: " + QRCodeId );
                     console.log("DataDB: " + data.codice);
-                    console.log("DataUS: " + QRCodeCodice);
+                    console.log("DataUS: " + QRCodeCodice);*/
                    if(data._id == QRCodeId && data.codice == QRCodeCodice ){
                        console.log("PreInsert");
                        insertLog(QRCodeId,idImpiegato);
@@ -199,7 +300,7 @@ app.post("/api/QRCheck",function(req,res,next){
               );
             
             }  
-         
+            client.close();  
     });
         
 });
@@ -221,7 +322,10 @@ function insertLog(QRCodeId,idImpiegato){
                 client.close();
         });
     }
+    client.close();
+
 });
+
 }
 
 
@@ -247,7 +351,8 @@ app.post("/api/calendario", function(req,res){
                 },
               );
             
-            }          
+            }   
+            client.close();       
     });
 });
 
@@ -284,9 +389,59 @@ app.post("/api/componentiTeam",function(req,res){
                });
             
             }          
+            client.close();
     });
 });
 
+app.post("/api/nuovoProgetto",function(req,res){
+    let nomeProgetto = req.body.nome;
+    let descProgetto = req.body.descrizione;
+    let scadenza = req.body.scadenza;
+    let stato = req.body.stato;
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('progetti');
+            collection.insertOne(
+                {"nome":nomeProgetto,"descrizione":descProgetto,"scadenza":new Date(scadenza).toISOString(),"stato":stato},
+                (err, data) => {
+                    if (err) res.send({"ris":"err"});
+                      else{
+                        res.send(JSON.stringify(data));
+                      }
+                   
+                },
+              );
+            
+            }    
+            client.close();      
+    });
+});
+app.post("/api/assegnaProgetto",function (req,res) {
+    let idProgetto = req.body.idProgetto;
+    let team = req.body.team;
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"});
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('progetti');
+            collection.updateOne({_id: mongoose.Types.ObjectId(idProgetto)}, {$set:{"team" : team,"stato":"Assegnato"}}, function(err, result) {
+                if (err)
+                   res.send({"ris":"err"});
+                else
+                    res.send({"ris":"ok"});
+            });
+            
+            }        
+            client.close();  
+    });
+  });
 app.post("/api/progettiTeam",function(req,res){
     console.log(req.body);
     let idTeamLeader = req.body.id;
@@ -315,7 +470,8 @@ app.post("/api/progettiTeam",function(req,res){
                 }
                });
             
-            }          
+            }  
+            client.close();        
     });
 });
 
@@ -347,7 +503,8 @@ app.post("/api/taskProgetto",function(req,res){
                 }
                });
             
-            }          
+            }
+            client.close();          
     });
 });
 
@@ -379,6 +536,7 @@ app.post("/api/microTask",function(req,res){
                });
             
             }          
+            client.close();
     });
 });
 
@@ -411,6 +569,7 @@ app.get("/api/taskUtente",function(req,res){
                });
             
             }          
+            client.close();
     });
 });
 
@@ -440,7 +599,8 @@ app.post("/api/aggiuntaTask",function(req,res){
                 },
               );
             
-            }          
+            }    
+            client.close();      
     });
 });
 
@@ -461,7 +621,8 @@ app.post("/api/assegnaTask",function(req,res){
                     res.send({"ris":"ok"});
             });
             
-            }          
+            }        
+            client.close();  
     });
 });
 app.post("/api/richiestaRevisione",function(req,res){
@@ -481,10 +642,29 @@ app.post("/api/richiestaRevisione",function(req,res){
                     res.send({"ris":"ok"});
             });
         }
+        client.close();
     });
 });
 
 
     app.post("/api/revisione",function (req,res) {
-
-});
+        let idTask = req.body.idTask;
+        let stato = req.body.stato;
+        let commento = req.body.commento;
+        MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+            if (err){
+                res.send({"ris":"err"});
+            }
+            else {
+                const DB = client.db('App');
+                let collection = DB.collection('task');
+                collection.updateOne({_id: mongoose.Types.ObjectId(idTask)}, {$set:{"stato":stato,$push:{"commento":commento}}}, function(err, result) {
+                    if (err)
+                       res.send({"ris":"err"});
+                    else
+                        res.send({"ris":"ok"});
+                });
+            }
+            client.close();
+        });
+    });
