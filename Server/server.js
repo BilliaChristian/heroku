@@ -71,8 +71,25 @@ app.get("/",function(req,res,next){
 });
 
 app.post("/api/test",function(res,req,next){
-        res.contentType("application/json");  
-        res.send({"ris":"PROVA"});
+    let prova = {"nome":"pipo","cognome":"toto"};
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"})
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('user');
+                collection.insertOne({"prova":prova}, function(err, dbUser) {
+                    if (err){
+                        res.send({"ris":"err"})}
+                    else {
+                        console.log("Nuovo Utente");
+          client.close();
+                    }
+                    client.close();
+                });
+            }      
+    });
 });
 
 // API LOGIN
