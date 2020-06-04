@@ -614,7 +614,7 @@ app.post("/api/aggiuntaTask", function (req, res) {
     let idProgetto = req.body.idProgetto;
     let nomeTask = req.body.nome;
     let descTask = req.body.desc;
-    let dataInizio = new Date.now().toISOString();
+    let dataInizio =  Date.now().toISOString();
     let dataScadenza = new Date(req.body.dataScadenza);
     let idTask;
     try {
