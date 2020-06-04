@@ -144,14 +144,14 @@ app.post("/api/register", function (req, res, next) {
     let nome = req.body.nome;
     let cognome = req.body.cognome;
     let tipologia = req.body.tipologia;
-    let codice = Math.random() * (9999 - 1000) + 1000
-    let password = nome.cognome.codice;
+    let codice = Math.random() * (10000 - 1000) + 1000
+    let password = nome+"."+cognome+"."+codice;
 
     console.log(username[0] + "+" + username[1] + "+" + username[2])
     console.log(username);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
-            res.send({ "ris": "err" })
+            res.send({ "ris": "err" });
         }
         else {
             const DB = client.db('App');
@@ -520,7 +520,7 @@ app.post("/api/taskProgetto", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('task');
             collection.find(
-                { "idProgetto": mongoose.Types.ObjectId(idProgetto), "tipo": "T" }
+                { "idProgetto": mongoose.Types.ObjectId(idProgetto)}
             ).toArray(function (err, result) {
 
                 if (err) res.send({ "ris": "err" });
