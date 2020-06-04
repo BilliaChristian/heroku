@@ -413,7 +413,7 @@ app.post("/api/componentiTeam", function (req, res) {
                         ris.push({ "idComponente": idComponente, "nomeTeam": element.team.nome, "stato": element.team.stato, "ruolo": element.team.ruolo });
                     });
 
-                    console.log(JSON.stringify(ris));
+                    //console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
                 client.close();
@@ -497,7 +497,7 @@ app.post("/api/progettiTeam", function (req, res) {
                         ris.push(element);
                     });
 
-                    console.log(JSON.stringify(ris));
+                    //console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
                 client.close();
@@ -531,7 +531,7 @@ app.post("/api/taskProgetto", function (req, res) {
                         ris.push(element);
                     });
 
-                    console.log(JSON.stringify(ris));
+                    //console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
                 client.close();
@@ -564,7 +564,7 @@ app.post("/api/microTask", function (req, res) {
                         ris.push(element);
                     });
 
-                    console.log(JSON.stringify(ris));
+                    //console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
                 client.close();
@@ -598,7 +598,7 @@ app.get("/api/taskUtente", function (req, res) {
                         ris.push(element);
                     });
 
-                    console.log(JSON.stringify(ris));
+                    //console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
                 client.close();
