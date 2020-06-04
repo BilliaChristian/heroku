@@ -644,7 +644,7 @@ app.post("/api/aggiuntaTask", function (req, res) {
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
                     else {
-                        res.send(JSON.stringify(data));
+                        res.send({"ris":"ok"});
                     }
                     client.close();
                 },
