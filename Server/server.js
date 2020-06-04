@@ -525,7 +525,7 @@ app.post("/api/taskProgetto", function (req, res) {
 
                 if (err) res.send({ "ris": "err" });
                 else {
-                    console.log(result);
+                    //console.log(result);
                     let ris = [];
                     result.forEach(element => {
                         ris.push(element);
@@ -627,9 +627,9 @@ app.post("/api/aggiuntaTask", function (req, res) {
     let query;
 
     if (idTask == null) {
-        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio.toISOString(), "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
+        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio, "scadenza": new Date(dataScadenza), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
     } else {
-        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio.toISOString(), "scadenza": new Date(dataScadenza).toISOString(), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idTask": mongoose.Types.ObjectId(idTask), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
+        query = { "nome": nomeTask, "descrizione": descTask, "dataInizio": dataInizio, "scadenza": new Date(dataScadenza), "idProgetto": mongoose.Types.ObjectId(idProgetto), "idTask": mongoose.Types.ObjectId(idTask), "idImpiegato": [], "tipo": tipologia, "stato": "L", "commento": [] };
 
     }
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
