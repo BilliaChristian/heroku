@@ -191,10 +191,11 @@ app.post("/api/assegnaTeam", function (req, res) {
                     res.send({ "ris": "err" });
                 else
                     res.send({ "ris": "ok" });
+                client.close();
             });
 
         }
-        client.close();
+
     });
 });
 
@@ -280,9 +281,10 @@ app.get("/api/QRCode", function (req, res, next) {
                     QRCode.toDataURL(JSON.stringify(data), function (err, url) {
                         res.end("<!DOCTYPE html/><html><head><title>QRCode</title></head><body><img witdh='25%' height='25%' src='" + url + "'/></body></html>");
                     });
+                    client.close();
                 });
         }
-        client.close();
+
     });
 });
 
@@ -319,11 +321,12 @@ app.post("/api/QRCheck", function (req, res, next) {
                         res.contentType("application/json");
                         res.send({ "ris": "err" });
                     }
+                    client.close();
                 },
             );
 
         }
-        client.close();
+
     });
 
 });
@@ -342,10 +345,10 @@ function insertLog(QRCodeId, idImpiegato) {
                 if (err) console.log(err);
                 else
                     console.log("Nuovo LogInserito");
-
+                client.close();
             });
         }
-        client.close();
+
 
     });
 
@@ -370,12 +373,12 @@ app.post("/api/calendario", function (req, res) {
                     else {
                         res.send(JSON.stringify(data));
                     }
-
+                    client.close();
                 },
             );
 
         }
-        client.close();
+
     });
 });
 
@@ -417,7 +420,7 @@ app.post("/api/componentiTeam", function (req, res) {
             });
 
         }
-        
+
     });
 });
 
@@ -440,12 +443,12 @@ app.post("/api/nuovoProgetto", function (req, res) {
                     else {
                         res.send(JSON.stringify(data));
                     }
-
+                    client.close();
                 },
             );
 
         }
-        client.close();
+
     });
 });
 app.post("/api/assegnaProgetto", function (req, res) {
@@ -464,10 +467,11 @@ app.post("/api/assegnaProgetto", function (req, res) {
                     res.send({ "ris": "err" });
                 else
                     res.send({ "ris": "ok" });
+                client.close();
             });
 
         }
-        client.close();
+
     });
 });
 app.post("/api/progettiTeam", function (req, res) {
@@ -496,10 +500,11 @@ app.post("/api/progettiTeam", function (req, res) {
                     console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
+                client.close();
             });
 
         }
-        client.close();
+
     });
 });
 
@@ -529,10 +534,11 @@ app.post("/api/taskProgetto", function (req, res) {
                     console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
+                client.close();
+
             });
 
         }
-        client.close();
     });
 });
 
@@ -561,10 +567,11 @@ app.post("/api/microTask", function (req, res) {
                     console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
+                client.close();
             });
 
         }
-        client.close();
+
     });
 });
 
@@ -594,10 +601,11 @@ app.get("/api/taskUtente", function (req, res) {
                     console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
+                client.close();
             });
 
         }
-        client.close();
+
     });
 });
 
@@ -623,12 +631,12 @@ app.post("/api/aggiuntaTask", function (req, res) {
                     else {
                         res.send(JSON.stringify(data));
                     }
-
+                    client.close();
                 },
             );
 
         }
-        client.close();
+
     });
 });
 
@@ -647,10 +655,11 @@ app.post("/api/assegnaTask", function (req, res) {
                     res.send({ "ris": "err" });
                 else
                     res.send({ "ris": "ok" });
+                client.close();
             });
 
         }
-        client.close();
+
     });
 });
 app.post("/api/richiestaRevisione", function (req, res) {
@@ -668,9 +677,10 @@ app.post("/api/richiestaRevisione", function (req, res) {
                     res.send({ "ris": "err" });
                 else
                     res.send({ "ris": "ok" });
+                client.close();
             });
         }
-        client.close();
+
     });
 });
 
@@ -691,8 +701,9 @@ app.post("/api/revisione", function (req, res) {
                     res.send({ "ris": "err" });
                 else
                     res.send({ "ris": "ok" });
+                client.close();
             });
         }
-        client.close();
+
     });
 });
