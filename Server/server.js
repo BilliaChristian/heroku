@@ -711,9 +711,9 @@ app.post("/api/revisione", function (req, res) {
         else {
             const DB = client.db('App');
             let collection = DB.collection('task');
-            collection.updateOne({ _id: mongoose.Types.ObjectId(idTask) }, { $set: { "stato": stato, $push: { "commento": commento } } }, function (err, result) {
+            collection.updateOne({ _id: mongoose.Types.ObjectId(idTask) }, { $set: { "stato": stato}, $push: { "commento": commento } }, function (err, result) {
                 if (err)
-                    res.send({ "ris": "err" });
+                    res.send({ "ris": err });
                 else
                     res.send({ "ris": "ok" });
                 client.close();
