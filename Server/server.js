@@ -429,7 +429,7 @@ app.post("/api/listaUtente", function (req, res) {
             let collection = DB.collection('user');
             collection.find(
                 { "tipo": "B" },
-                { projection: { _id: 1 } }
+                { projection: { _id: 1,"team":1 } }
             ).toArray(function (err, result) {
 
                 if (err) {
@@ -484,11 +484,11 @@ app.post("/api/newLeader",function (req,res) {
         });
   })
 app.post("/api/aggiungiTeam", function (req, res) {
-    let idLeader = req.body.idLeader;
+    let id = req.body.id;
     let nomeTeam = req.body.nomeTeam;
     let ruolo = req.body.ruolo;
     let stato = req.body.stato;
-    let idUser = idLeader.split(".");
+    let idUser = id.split(".");
 
         MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
             if (err) {
@@ -497,13 +497,14 @@ app.post("/api/aggiungiTeam", function (req, res) {
             else {
                 const DB = client.db('App');
                 let collection = DB.collection('user');
-                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeade": idLeader, "team.ruolo": ruolo, "team.stato": stato } }, function (err, result) {
+                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeade": id, "team.ruolo": ruolo, "team.stato": stato } }, function (err, result) {
                     if (err)
                         res.send({ "ris": "err" });
                     else
                         res.send({ "ris": "ok" });
+                    client.close();
                 });
-                client.close();
+               
 
 
             }
