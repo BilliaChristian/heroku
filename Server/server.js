@@ -384,7 +384,7 @@ app.post("/api/calendario", function (req, res) {
 
 
 //API Team
-app.post("/api/listaLeader",function(req,res){
+app.post("/api/listaUtente", function (req, res) {
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
             res.send({ "ris": "err" });
@@ -393,8 +393,8 @@ app.post("/api/listaLeader",function(req,res){
             const DB = client.db('App');
             let collection = DB.collection('user');
             collection.find(
-                { "tipo": "T" },
-                { projection: { _id: 1,"team":1 } }
+                { "tipo": "B" },
+                { projection: { _id: 1 } }
             ).toArray(function (err, result) {
 
                 if (err) {
@@ -406,7 +406,7 @@ app.post("/api/listaLeader",function(req,res){
                     let ris = [];
                     result.forEach(element => {
                         let idComponente = element._id.nome + "." + element._id.cognome + "." + element._id.codice;
-                        ris.push({ "idLeader": idComponente,"nomeTeam":element.team.nome});
+                        ris.push({ "idLeader": idComponente, "nomeTeam": element.team.nome });
                     });
 
                     //console.log(JSON.stringify(ris));
@@ -420,6 +420,34 @@ app.post("/api/listaLeader",function(req,res){
     });
 });
 
+app.post("/api/newTeam", function (req, res) {
+    let idLeader = req.body.idLeader;
+    let nomeTeam = req.body.nomeTeam;
+    let ruolo = req.body.ruolo;
+    let stato = req.body.stato;
+    let idUser = idLeader.split(".");
+    app.post("/api/listaLeader", function (req, res) {
+        MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
+            if (err) {
+                res.send({ "ris": "err" });
+            }
+            else {
+                const DB = client.db('App');
+                let collection = DB.collection('user');
+                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeade": idLeader, "team.ruolo": ruolo, "team.stato": stato } }, function (err, result) {
+                    if (err)
+                        res.send({ "ris": "err" });
+                    else
+                        res.send({ "ris": "ok" });
+                });
+                client.close();
+
+
+            }
+
+        });
+    });
+});
 app.post("/api/componentiTeam", function (req, res) {
     console.log(req.body);
     let idTeamLeader = req.body.id;
@@ -458,7 +486,7 @@ app.post("/api/componentiTeam", function (req, res) {
 
     });
 });
-app.post("/api/listaProgetti",function (req,res) {
+app.post("/api/listaProgetti", function (req, res) {
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
@@ -468,7 +496,7 @@ app.post("/api/listaProgetti",function (req,res) {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
             collection.find(
-                { }
+                {}
             ).toArray(function (err, result) {
 
                 if (err) res.send({ "ris": "err" });
@@ -488,11 +516,11 @@ app.post("/api/listaProgetti",function (req,res) {
         }
 
     });
-  });
+});
 app.post("/api/nuovoProgetto", function (req, res) {
     let nomeProgetto = req.body.nome;
     let descProgetto = req.body.descrizione;
-    let dataInizio =  new Date();
+    let dataInizio = new Date();
     let scadenza = req.body.scadenza;
     //let stato = req.body.stato;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
@@ -503,7 +531,7 @@ app.post("/api/nuovoProgetto", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
             collection.insertOne(
-                { "nome": nomeProgetto, "descrizione": descProgetto,"dataInizio":dataInizio, "scadenza": new Date(scadenza).toISOString(), "stato": "Libero" },
+                { "nome": nomeProgetto, "descrizione": descProgetto, "dataInizio": dataInizio, "scadenza": new Date(scadenza).toISOString(), "stato": "Libero" },
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
                     else {
@@ -534,11 +562,11 @@ app.post("/api/assegnaProgetto", function (req, res) {
             collection.findOne({ "_id.nome": username[0], "_id.cognome": username[1], "_id.codice": parseInt(username[2]) }, function (err, dbUser) {
                 if (err) {
                     res.send({ "ris": "err" })
-                }else{
+                } else {
                     console.log(dbUser);
                     nomeTeam = dbUser.team;
                     collection = DB.collection('progetti');
-                    collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": idLeader,"team.nome":nomeTeam.nome, "stato": "Assegnato" } }, function (err, result) {
+                    collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": idLeader, "team.nome": nomeTeam.nome, "stato": "Assegnato" } }, function (err, result) {
                         if (err)
                             res.send({ "ris": "err" });
                         else
@@ -547,16 +575,16 @@ app.post("/api/assegnaProgetto", function (req, res) {
                     });
                 }
             });
-               
+
 
         }
 
     });
 });
 
-app.post("/api/modificaProgetto",function(req,res){
+app.post("/api/modificaProgetto", function (req, res) {
     let idProgetto = req.body.idProgetto;
-    let stato  = req.body.stato;
+    let stato = req.body.stato;
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
@@ -565,7 +593,7 @@ app.post("/api/modificaProgetto",function(req,res){
         else {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
-            collection.updateOne({ "_id": mongoose.Types.ObjectId(idProgetto) }, { $set: {"stato": stato } }, function (err, result) {
+            collection.updateOne({ "_id": mongoose.Types.ObjectId(idProgetto) }, { $set: { "stato": stato } }, function (err, result) {
                 if (err)
                     res.send({ "ris": "err" });
                 else
@@ -682,8 +710,8 @@ app.get("/api/getTaskUtente", function (req, res) {
     let idUtente = req.query.idUtente;
     let idProgetto = req.query.idProgetto;
 
-    console.log("utente:"+idUtente);
-    console.log("progetto:"+idProgetto);
+    console.log("utente:" + idUtente);
+    console.log("progetto:" + idProgetto);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
             res.send({ "ris": "err" });
@@ -751,7 +779,7 @@ app.post("/api/aggiuntaTask", function (req, res) {
     let idProgetto = req.body.idProgetto;
     let nomeTask = req.body.nome;
     let descTask = req.body.desc;
-    let dataInizio =  new Date();
+    let dataInizio = new Date();
     let dataScadenza = req.body.dataScadenza;
     let idTask;
     try {
@@ -780,16 +808,16 @@ app.post("/api/aggiuntaTask", function (req, res) {
                 query,
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
-                    else{
-                    collection.updateOne({ "_id": mongoose.Types.ObjectId(idTask) }, { $set: { "stato": "L" } }, function (err, result) {
-                        if (err)
-                            res.send({ "ris": "err" });
-                        else
-                            res.send({ "ris": "ok" });
-                        client.close();
-                    });
-                }
-                    
+                    else {
+                        collection.updateOne({ "_id": mongoose.Types.ObjectId(idTask) }, { $set: { "stato": "L" } }, function (err, result) {
+                            if (err)
+                                res.send({ "ris": "err" });
+                            else
+                                res.send({ "ris": "ok" });
+                            client.close();
+                        });
+                    }
+
                 },
             );
 
@@ -821,7 +849,7 @@ app.post("/api/assegnaTask", function (req, res) {
     });
 });
 app.post("/api/richiestaRevisione", function (req, res) {
-    
+
     let idTask = req.body.idTask;
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
@@ -856,7 +884,7 @@ app.post("/api/revisione", function (req, res) {
         else {
             const DB = client.db('App');
             let collection = DB.collection('task');
-            collection.updateOne({ _id: mongoose.Types.ObjectId(idTask) }, { $set: { "stato": stato}, $push: { "commento": commento } }, function (err, result) {
+            collection.updateOne({ _id: mongoose.Types.ObjectId(idTask) }, { $set: { "stato": stato }, $push: { "commento": commento } }, function (err, result) {
                 if (err)
                     res.send({ "ris": err });
                 else
