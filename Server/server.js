@@ -536,6 +536,7 @@ app.post("/api/assegnaProgetto", function (req, res) {
                 }else{
                     nomeTeam = dbUser.team.nome;
                 }
+            });
                 collection = DB.collection('progetti');
             collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": team,"team.nome":nomeTeam, "stato": "Assegnato" } }, function (err, result) {
                 if (err)
