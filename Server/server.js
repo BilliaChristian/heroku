@@ -394,7 +394,7 @@ app.post("/api/listaLeader",function(req,res){
             let collection = DB.collection('user');
             collection.find(
                 { "tipo": "T" },
-                { projection: { _id: 1 } }
+                { projection: { _id: 1,"team":1 } }
             ).toArray(function (err, result) {
 
                 if (err) {
@@ -406,7 +406,7 @@ app.post("/api/listaLeader",function(req,res){
                     let ris = [];
                     result.forEach(element => {
                         let idComponente = element._id.nome + "." + element._id.cognome + "." + element._id.codice;
-                        ris.push({ "idLeader": idComponente});
+                        ris.push({ "idLeader": idComponente,"nomeTeam":element.team.nome});
                     });
 
                     //console.log(JSON.stringify(ris));
