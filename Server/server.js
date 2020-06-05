@@ -459,7 +459,7 @@ app.post("/api/nuovoProgetto", function (req, res) {
     let descProgetto = req.body.descrizione;
     let dataInizio =  new Date();
     let scadenza = req.body.scadenza;
-    let stato = req.body.stato;
+    //let stato = req.body.stato;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
             res.send({ "ris": "err" });
@@ -468,7 +468,7 @@ app.post("/api/nuovoProgetto", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
             collection.insertOne(
-                { "nome": nomeProgetto, "descrizione": descProgetto,"dataInizio":dataInizio, "scadenza": new Date(scadenza).toISOString(), "stato": stato },
+                { "nome": nomeProgetto, "descrizione": descProgetto,"dataInizio":dataInizio, "scadenza": new Date(scadenza).toISOString(), "stato": "Libero" },
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
                     else {
@@ -494,6 +494,30 @@ app.post("/api/assegnaProgetto", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
             collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team": team, "stato": "Assegnato" } }, function (err, result) {
+                if (err)
+                    res.send({ "ris": "err" });
+                else
+                    res.send({ "ris": "ok" });
+                client.close();
+            });
+
+        }
+
+    });
+});
+
+app.post("/api/modificaProgetto",function(req,res){
+    let idProgetto = req.body.idProgetto;
+    let stato  = req.body.stato;
+
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
+        if (err) {
+            res.send({ "ris": "err" });
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('progetti');
+            collection.updateOne({ "_id": mongoose.Types.ObjectId(idProgetto) }, { $set: {"stato": stato } }, function (err, result) {
                 if (err)
                     res.send({ "ris": "err" });
                 else
