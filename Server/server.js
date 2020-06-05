@@ -454,6 +454,7 @@ app.post("/api/listaUtente", function (req, res) {
 
     });
 });
+
 app.post("/api/newLeader",function (req,res) {
     let idLeader = req.body.idLeader;
     let nomeTeam = req.body.nomeTeam;
@@ -473,8 +474,9 @@ app.post("/api/newLeader",function (req,res) {
                     }
                     else
                         res.send({ "ris": "ok" });
+                    client.close();
                 });
-                client.close();
+               
 
 
             }
@@ -592,7 +594,7 @@ app.post("/api/nuovoProgetto", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
             collection.insertOne(
-                { "nome": nomeProgetto, "descrizione": descProgetto, "dataInizio": dataInizio, "scadenza": new Date(scadenza).toISOString(), "stato": "Libero" },
+                { "nome": nomeProgetto, "descrizione": descProgetto, "dataInizio": dataInizio, "scadenza": new Date(scadenza), "stato": "Libero" },
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
                     else {
