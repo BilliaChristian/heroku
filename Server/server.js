@@ -384,6 +384,41 @@ app.post("/api/calendario", function (req, res) {
 
 
 //API Team
+app.post("/api/listaLeader",function(req,res){
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
+        if (err) {
+            res.send({ "ris": "err" });
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('user');
+            collection.find(
+                { "tipo": "T" },
+                { projection: { _id: 1 } }
+            ).toArray(function (err, result) {
+
+                if (err) {
+                    console.log(err);
+                    res.send({ "ris": "err" });
+                }
+                else {
+                    console.log(result);
+                    let ris = [];
+                    result.forEach(element => {
+                        let idComponente = element._id.nome + "." + element._id.cognome + "." + element._id.codice;
+                        ris.push({ "idLeader": idComponente});
+                    });
+
+                    //console.log(JSON.stringify(ris));
+                    res.send(JSON.stringify(ris));
+                }
+                client.close();
+            });
+
+        }
+
+    });
+});
 
 app.post("/api/componentiTeam", function (req, res) {
     console.log(req.body);
