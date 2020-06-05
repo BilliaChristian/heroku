@@ -522,6 +522,7 @@ app.post("/api/assegnaProgetto", function (req, res) {
     let idLeader = req.body.team;
     let username = idLeader.split('.');
     let nomeTeam;
+    console.log(idLeader);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
             res.send({ "ris": "err" });
@@ -536,16 +537,17 @@ app.post("/api/assegnaProgetto", function (req, res) {
                 }else{
                     console.log(dbUser);
                     nomeTeam = dbUser.team;
+                    collection = DB.collection('progetti');
+                    collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": idLeader,"team.nome":nomeTeam.nome, "stato": "Assegnato" } }, function (err, result) {
+                        if (err)
+                            res.send({ "ris": "err" });
+                        else
+                            res.send({ "ris": "ok" });
+                        client.close();
+                    });
                 }
             });
-                collection = DB.collection('progetti');
-            collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": idLeader,"team.nome":nomeTeam.nome, "stato": "Assegnato" } }, function (err, result) {
-                if (err)
-                    res.send({ "ris": "err" });
-                else
-                    res.send({ "ris": "ok" });
-                client.close();
-            });
+               
 
         }
 
