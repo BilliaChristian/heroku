@@ -528,7 +528,7 @@ app.post("/api/assegnaProgetto", function (req, res) {
         else {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
-            collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team": team, "stato": "Assegnato" } }, function (err, result) {
+            collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": team, "stato": "Assegnato" } }, function (err, result) {
                 if (err)
                     res.send({ "ris": "err" });
                 else
