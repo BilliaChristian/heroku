@@ -643,9 +643,7 @@ app.post("/api/aggiuntaTask", function (req, res) {
                 query,
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
-                    else {
-                        res.send({"ris":"ok"});
-                    }
+                    else{
                     collection.updateOne({ "_id": mongoose.Types.ObjectId(idTask) }, { $set: { "stato": "L" } }, function (err, result) {
                         if (err)
                             res.send({ "ris": "err" });
@@ -653,6 +651,7 @@ app.post("/api/aggiuntaTask", function (req, res) {
                             res.send({ "ris": "ok" });
                         client.close();
                     });
+                }
                     
                 },
             );
