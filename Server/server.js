@@ -519,8 +519,8 @@ app.post("/api/nuovoProgetto", function (req, res) {
 });
 app.post("/api/assegnaProgetto", function (req, res) {
     let idProgetto = req.body.idProgetto;
-    let team = req.body.team;
-    let username = req.body.team.split('.');
+    let idLeader = req.body.team;
+    let username = idLeader.split('.');
     let nomeTeam;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
@@ -535,11 +535,11 @@ app.post("/api/assegnaProgetto", function (req, res) {
                     res.send({ "ris": "err" })
                 }else{
                     console.log(dbUser);
-                    nomeTeam = dbUser.team.nome;
+                    nomeTeam = dbUser.team;
                 }
             });
                 collection = DB.collection('progetti');
-            collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": team,"team.nome":nomeTeam, "stato": "Assegnato" } }, function (err, result) {
+            collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": idLeader,"team.nome":nomeTeam.nome, "stato": "Assegnato" } }, function (err, result) {
                 if (err)
                     res.send({ "ris": "err" });
                 else
@@ -592,7 +592,7 @@ app.post("/api/progettiTeam", function (req, res) {
 
                 if (err) res.send({ "ris": "err" });
                 else {
-                    console.log(result);
+                    //console.log(result);
                     let ris = [];
                     result.forEach(element => {
                         ris.push(element);
