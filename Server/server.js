@@ -534,6 +534,7 @@ app.post("/api/assegnaProgetto", function (req, res) {
                 if (err) {
                     res.send({ "ris": "err" })
                 }else{
+                    console.log(dbUser);
                     nomeTeam = dbUser.team.nome;
                 }
             });
