@@ -406,7 +406,7 @@ app.post("/api/listaLeader", function (req, res) {
                     let ris = [];
                     result.forEach(element => {
                         let idComponente = element._id.nome + "." + element._id.cognome + "." + element._id.codice;
-                        ris.push({ "idLeader": idComponente, "nomeTeam": element.team.nome });
+                        ris.push({ "idLeader": idComponente});
                     });
 
                     //console.log(JSON.stringify(ris));
