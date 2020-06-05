@@ -454,8 +454,32 @@ app.post("/api/listaUtente", function (req, res) {
 
     });
 });
+app.post("/api/newLeader",function (req,res) {
+    let idLeader = req.body.idLeader;
+    let nomeTeam = req.body.nomeTeam;
+    let idUser = idLeader.split(".");
 
-app.post("/api/newTeam", function (req, res) {
+        MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
+            if (err) {
+                res.send({ "ris": "err" });
+            }
+            else {
+                const DB = client.db('App');
+                let collection = DB.collection('user');
+                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeade": idLeader, "team.ruolo": "C", "team.stato": "Attivo" } }, function (err, result) {
+                    if (err)
+                        res.send({ "ris": "err" });
+                    else
+                        res.send({ "ris": "ok" });
+                });
+                client.close();
+
+
+            }
+
+        });
+  })
+app.post("/api/aggiungiTeam", function (req, res) {
     let idLeader = req.body.idLeader;
     let nomeTeam = req.body.nomeTeam;
     let ruolo = req.body.ruolo;
@@ -481,7 +505,7 @@ app.post("/api/newTeam", function (req, res) {
             }
 
         });
-    });
+});
 
 app.post("/api/componentiTeam", function (req, res) {
     console.log(req.body);
