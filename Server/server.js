@@ -433,7 +433,8 @@ app.post("/api/listaProgetti",function (req,res) {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
             collection.find(
-                { }
+                { },
+                { projection: { team: 0 } }
             ).toArray(function (err, result) {
 
                 if (err) res.send({ "ris": "err" });
