@@ -520,15 +520,24 @@ app.post("/api/nuovoProgetto", function (req, res) {
 app.post("/api/assegnaProgetto", function (req, res) {
     let idProgetto = req.body.idProgetto;
     let team = req.body.team;
-
+    let username = req.body.team.split('.');
+    let nomeTeam;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
             res.send({ "ris": "err" });
         }
         else {
             const DB = client.db('App');
-            let collection = DB.collection('progetti');
-            collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": team, "stato": "Assegnato" } }, function (err, result) {
+            let collection = DB.collection('user');
+
+            collection.findOne({ "_id.nome": username[0], "_id.cognome": username[1], "_id.codice": parseInt(username[2]) }, function (err, dbUser) {
+                if (err) {
+                    res.send({ "ris": "err" })
+                }else{
+                    nomeTeam = dbUser.team.nome;
+                }
+                collection = DB.collection('progetti');
+            collection.updateOne({ _id: mongoose.Types.ObjectId(idProgetto) }, { $set: { "team.idLeader": team,"team.nome":nomeTeam, "stato": "Assegnato" } }, function (err, result) {
                 if (err)
                     res.send({ "ris": "err" });
                 else
