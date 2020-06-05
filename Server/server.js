@@ -646,7 +646,14 @@ app.post("/api/aggiuntaTask", function (req, res) {
                     else {
                         res.send({"ris":"ok"});
                     }
-                    client.close();
+                    collection.updateOne({ "_id": mongoose.Types.ObjectId(idTask) }, { $set: { "stato": "L" } }, function (err, result) {
+                        if (err)
+                            res.send({ "ris": "err" });
+                        else
+                            res.send({ "ris": "ok" });
+                        client.close();
+                    });
+                    
                 },
             );
 
