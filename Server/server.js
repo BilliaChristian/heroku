@@ -579,6 +579,8 @@ app.get("/api/getTaskUtente", function (req, res) {
     let idUtente = req.query.idUtente;
     let idProgetto = req.query.idProgetto;
 
+    console.log("utente:"+idUtente);
+    console.log("progetto:"+idProgetto);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
         if (err) {
             res.send({ "ris": "err" });
@@ -598,7 +600,7 @@ app.get("/api/getTaskUtente", function (req, res) {
                         ris.push(element);
                     });
 
-                    //console.log(JSON.stringify(ris));
+                    console.log(JSON.stringify(ris));
                     res.send(JSON.stringify(ris));
                 }
                 client.close();
