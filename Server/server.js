@@ -441,7 +441,7 @@ app.post("/api/listaUtente", function (req, res) {
                     let ris = [];
                     result.forEach(element => {
                         let idComponente = element._id.nome + "." + element._id.cognome + "." + element._id.codice;
-                        ris.push({ "idLeader": idComponente});
+                        ris.push({ "idLeader": idComponente,"team":element.team});
                     });
 
                     //console.log(JSON.stringify(ris));
