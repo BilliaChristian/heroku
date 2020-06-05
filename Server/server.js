@@ -423,10 +423,41 @@ app.post("/api/componentiTeam", function (req, res) {
 
     });
 });
+app.post("/api/listaProgetti",function (req,res) {
 
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
+        if (err) {
+            res.send({ "ris": "err" });
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('progetti');
+            collection.find(
+                { }
+            ).toArray(function (err, result) {
+
+                if (err) res.send({ "ris": "err" });
+                else {
+                    console.log(result);
+                    let ris = [];
+                    result.forEach(element => {
+                        ris.push(element);
+                    });
+
+                    //console.log(JSON.stringify(ris));
+                    res.send(JSON.stringify(ris));
+                }
+                client.close();
+            });
+
+        }
+
+    });
+  });
 app.post("/api/nuovoProgetto", function (req, res) {
     let nomeProgetto = req.body.nome;
     let descProgetto = req.body.descrizione;
+    let dataInizio =  new Date();
     let scadenza = req.body.scadenza;
     let stato = req.body.stato;
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
@@ -437,7 +468,7 @@ app.post("/api/nuovoProgetto", function (req, res) {
             const DB = client.db('App');
             let collection = DB.collection('progetti');
             collection.insertOne(
-                { "nome": nomeProgetto, "descrizione": descProgetto, "scadenza": new Date(scadenza).toISOString(), "stato": stato },
+                { "nome": nomeProgetto, "descrizione": descProgetto,"dataInizio":dataInizio, "scadenza": new Date(scadenza).toISOString(), "stato": stato },
                 (err, data) => {
                     if (err) res.send({ "ris": "err" });
                     else {
