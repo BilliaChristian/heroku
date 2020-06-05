@@ -808,6 +808,7 @@ app.post("/api/assegnaTask", function (req, res) {
     });
 });
 app.post("/api/richiestaRevisione", function (req, res) {
+    
     let idTask = req.body.idTask;
 
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function (err, client) {
@@ -831,6 +832,7 @@ app.post("/api/richiestaRevisione", function (req, res) {
 
 
 app.post("/api/revisione", function (req, res) {
+    console.log(req.body);
     let idTask = req.body.idTask;
     let stato = req.body.stato;
     let commento = req.body.commento;
