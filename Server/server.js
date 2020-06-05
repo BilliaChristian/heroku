@@ -466,7 +466,7 @@ app.post("/api/newLeader",function (req,res) {
             else {
                 const DB = client.db('App');
                 let collection = DB.collection('user');
-                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeade": idLeader, "team.ruolo": "C", "team.stato": "Attivo" } }, function (err, result) {
+                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeade": idLeader, "team.ruolo": "C", "team.stato": "Attivo" ,"tipo":"T"} }, function (err, result) {
                     if (err)
                         res.send({ "ris": "err" });
                     else
