@@ -485,6 +485,7 @@ app.post("/api/newLeader",function (req,res) {
   })
 app.post("/api/aggiungiTeam", function (req, res) {
     let id = req.body.id;
+    let idLeader = req.body.idLeader;
     let nomeTeam = req.body.nomeTeam;
     let ruolo = req.body.ruolo;
     let stato = req.body.stato;
@@ -497,7 +498,7 @@ app.post("/api/aggiungiTeam", function (req, res) {
             else {
                 const DB = client.db('App');
                 let collection = DB.collection('user');
-                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeader": id, "team.ruolo": ruolo, "team.stato": stato } }, function (err, result) {
+                collection.updateOne({ "_id.nome": idUser[0], "_id.cognome": idUser[1], "_id.codice": parseInt(idUser[2]) }, { $set: { "team.nome": nomeTeam, "team.idLeader": idLeader, "team.ruolo": ruolo, "team.stato": stato } }, function (err, result) {
                     if (err)
                         res.send({ "ris": "err" });
                     else
